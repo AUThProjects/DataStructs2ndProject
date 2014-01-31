@@ -1,0 +1,85 @@
+# depslib dependency file v1.0
+1384724892 source:c:\users\anthony\datastructures\main.cpp
+	<iostream>
+	"include/AVL.h"
+	<cstdlib>
+
+1384449162 source:c:\users\anthony\datastructures\src\node.cpp
+	"../include/Node.h"
+
+1384698644 c:\users\anthony\datastructures\include\node.h
+	"../include/AVL.h"
+
+1384724892 source:c:\users\anthony\datastructures\src\avl.cpp
+	"../include/AVL.h"
+	"../include/treeNode.h"
+	<iostream>
+	<cmath>
+
+1384724948 c:\users\anthony\datastructures\include\avl.h
+	"../include/treeNode.h"
+
+1384723660 c:\users\anthony\datastructures\include\treenode.h
+
+1384724490 source:c:\users\anthony\datastructures\src\treenode.cpp
+	"../include/treeNode.h"
+	<cmath>
+
+1386168356 source:c:\users\stefanos\desktop\files\datastructures\datastructures\main.cpp
+	<iostream>
+	"include/AVL.h"
+	<cstdlib>
+	"include/Database.h"
+	"include/IO.h"
+
+1385944388 c:\users\stefanos\desktop\files\datastructures\datastructures\include\avl.h
+	<iostream>
+	"../include/treeNode.h"
+
+1385943230 c:\users\stefanos\desktop\files\datastructures\datastructures\include\treenode.h
+
+1385944387 source:c:\users\stefanos\desktop\files\datastructures\datastructures\src\avl.cpp
+	"../include/AVL.h"
+	"../include/treeNode.h"
+	<iostream>
+	<cmath>
+
+1385840649 source:c:\users\stefanos\desktop\files\datastructures\datastructures\src\node.cpp
+	"../include/Node.h"
+
+1386114041 c:\users\stefanos\desktop\files\datastructures\datastructures\include\node.h
+	"../include/AVL.h"
+
+1386074829 source:c:\users\stefanos\desktop\files\datastructures\datastructures\src\treenode.cpp
+	"../include/treeNode.h"
+	<cmath>
+	<iostream>
+
+1386103778 c:\users\stefanos\desktop\files\datastructures\datastructures\include\database.h
+	"Node.h"
+
+1386168098 source:c:\users\stefanos\desktop\files\datastructures\datastructures\src\database.cpp
+	"../include/Database.h"
+	<cmath>
+
+1386168072 source:c:\users\stefanos\desktop\files\datastructures\datastructures\src\io.cpp
+	"../include/IO.h"
+	<fstream>
+	<cstdlib>
+	<cstring>
+
+1385944895 c:\users\stefanos\desktop\files\datastructures\datastructures\include\io.h
+	"Database.h"
+
+1385840649 source:c:\users\anthony\documents\datastructures\src\node.cpp
+	"../include/Node.h"
+
+1386168621 c:\users\anthony\documents\datastructures\include\node.h
+	"../include/AVL.h"
+
+1385944388 c:\users\anthony\documents\datastructures\include\avl.h
+	<iostream>
+	"../include/treeNode.h"
+
+1385943230 c:\users\anthony\documents\datastructures\include\treenode.h
+
