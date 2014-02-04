@@ -27,7 +27,7 @@ class AVL
 
         int getNumberOfLeaves(); // accessor, retuns numberOfLeaves
         // called from outside
-        void insertTreeNode(int idOfConnectedNode); // inserts a new treeNode to the AVL. If existent, does nothing.
+        void insertTreeNode(int idOfConnectedNode, int weight); // inserts a new treeNode to the AVL. If existent, does nothing.
         void deleteTreeNode(int idOfConnectedNode); // deletes a treeNode from the AVL. If non existent, does nothing.
         //bool hasConnectedNode(int idOfConnectedNode); // not implemented
         void printTree(treeNode* root, ostream& myStream); // prints inOrder
@@ -38,7 +38,7 @@ class AVL
         treeNode* head;
         int numberOfLeaves;
         // called from inside tha class, for recursion
-        treeNode* insertTreeNode(int idOfConnectedNode, treeNode* root);
+        treeNode* insertTreeNode(int idOfConnectedNode,int weight, treeNode* root);
         treeNode* deleteTreeNode(int idOfConnectedNode, treeNode * root);
 
         static int calculateBf(treeNode* node); // returns the bf of a specific node

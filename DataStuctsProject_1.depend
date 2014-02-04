@@ -83,3 +83,49 @@
 
 1385943230 c:\users\anthony\documents\datastructures\include\treenode.h
 
+1391536293 source:c:\users\steve\documents\github\datastructs2ndproject\main.cpp
+	<iostream>
+	"include/AVL.h"
+	<cstdlib>
+	"include/Database.h"
+	"include/IO.h"
+
+1391531269 c:\users\steve\documents\github\datastructs2ndproject\include\avl.h
+	<iostream>
+	"../include/treeNode.h"
+
+1391530062 c:\users\steve\documents\github\datastructs2ndproject\include\treenode.h
+
+1391533292 c:\users\steve\documents\github\datastructs2ndproject\include\database.h
+	"Node.h"
+
+1391530092 c:\users\steve\documents\github\datastructs2ndproject\include\node.h
+	"../include/AVL.h"
+
+1391524013 c:\users\steve\documents\github\datastructs2ndproject\include\io.h
+	"Database.h"
+
+1391529897 source:c:\users\steve\documents\github\datastructs2ndproject\src\avl.cpp
+	"../include/AVL.h"
+	"../include/treeNode.h"
+	<iostream>
+	<cmath>
+
+1391536232 source:c:\users\steve\documents\github\datastructs2ndproject\src\database.cpp
+	"../include/Database.h"
+	<cmath>
+
+1391529966 source:c:\users\steve\documents\github\datastructs2ndproject\src\node.cpp
+	"../include/Node.h"
+
+1391525013 source:c:\users\steve\documents\github\datastructs2ndproject\src\treenode.cpp
+	"../include/treeNode.h"
+	<cmath>
+	<iostream>
+
+1391536438 source:c:\users\steve\documents\github\datastructs2ndproject\src\io.cpp
+	"../include/IO.h"
+	<fstream>
+	<cstdlib>
+	<cstring>
+

@@ -25,26 +25,25 @@ class Database
         friend istream& operator>> (istream& myStream, Database& obj);
 
         //insertions and deletions
-        bool insertNewLink(int leftId, int rightId);
+        bool insertNewLink(int leftId, int rightId, int weight);
         bool deleteExistingLink(int leftId, int rightId);
-
+        int hashFunction(int key); // the hashing function
     protected:
     private:
         // Data Structure --
-        Node **  theDatabase; //sortedArray
+        Node **  theDatabase; // hashtable
 
         int sizeOfDatabase; // current load of database
         int capacity; // max size to accommodate
-        bool myRealloc(); // realloc function
+        // internally used hashing functions
+        int hashFunction(int key, int iteration);
+        int auxHashFunction1(int key);
+        int auxHashFunction2(int key);
 
-        //------------------
 
-        //inner use for inserting new node
-        bool insertNode(Node nodeToBeInserted);
 
         //search functions
-        resultOfBinary binarySearch(int idToSearch); //general binary search function
-        Node* searchNodeByID(int idToSearch); // returns pointer to Node from DB
+        Node** searchNodeByID(int idToSearch); // returns pointer to Node from DB
 };
 
 #endif // DATABASE_H

@@ -39,10 +39,10 @@ Node::~Node()
 }
 
 
-bool Node::addNewNode(int idOfNewNode)
+bool Node::addNewNode(int idOfNewNode, int weight)
 {
     int previousSize = numberOfConnectedNodes;
-    this->avlTree->insertTreeNode(idOfNewNode);
+    this->avlTree->insertTreeNode(idOfNewNode, weight);
     numberOfConnectedNodes = avlTree->getNumberOfLeaves();
     if (previousSize == numberOfConnectedNodes)
     {

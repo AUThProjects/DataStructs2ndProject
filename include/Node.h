@@ -17,7 +17,7 @@ class Node
         int getID(); // accessor for id
         int getNumberOfConnectedNodes(); // accessor for numberOfConnectedNode, needed for the output file
 
-        bool addNewNode(int idOfNewNode); // adds a new node. If existent, returns false
+        bool addNewNode(int idOfNewNode, int weight); // adds a new node. If existent, returns false
         bool deleteNode(int idOfExistingNode); // deletes a node. If not existent, returns false
     protected:
     private:

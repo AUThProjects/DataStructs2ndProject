@@ -8,11 +8,13 @@ class treeNode
         // ctors
         treeNode();
         treeNode(int value);
+        treeNode(int value, int weight);
         // dtor
         virtual ~treeNode();
         // accessors
         int getHeight();
         int getValue();
+        int getWeight();
         treeNode* getLeft();
         treeNode* getRight();
         // mutators
@@ -25,6 +27,7 @@ class treeNode
     private:
         treeNode* leftChild; // pointer to left node
         treeNode* rightChild; // pointer to right node
+        int weight; // the weight with with the current treeNode is linked to the Node connected.
         int value; // the value of the node
         int height; // the height of the node.
 };

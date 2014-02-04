@@ -1,0 +1,11 @@
+Data Structs project 2:
+-----------------------
+
+1. Hash Function (Intro to Algo: pg.273) -- done
+2. Insert Node -- done
+3. Search -- done
+4. Insert Connection -- done
+5. MST
+6. Common Neighbours
+7. Shortest Path
+8. Insert link / Delete link - Done

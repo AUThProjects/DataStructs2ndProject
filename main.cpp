@@ -78,10 +78,10 @@ int main()
 
     cout << "Program started" << endl;
     Database* myDB = new Database();
-
-
-    /*myDB->insertNewLink(1,5);
-    myDB->insertNewLink(1,7);
+    cout<< *myDB << endl;
+    cout << "Reading commands " <<endl;
+   // myDB->insertNewLink(1,5, 7);
+    /*myDB->insertNewLink(1,7);
     myDB->insertNewLink(2,1);
     myDB->insertNewLink(1,7);
     myDB->insertNewLink(2,6);
@@ -91,7 +91,6 @@ int main()
     myDB->insertNewLink(4,1);
     myDB->insertNewLink(-2,1);*/
 
-
     IO *myIO = new IO();
     if (!myIO->readCommands("commands.txt", myDB))
     {
@@ -99,6 +98,7 @@ int main()
         return -1;
     }
     cout << "Program ended successfully" << endl;
+    //cout << *myDB << endl;
     return 0;
 }
 
@@ -112,7 +112,7 @@ ostream& operator<< (ostream& myStream, AVL& obj)
 ostream& operator<< (ostream& myStream, Node& obj)
 {
     //cout << "\ninside <<operator Node" << endl;
-    myStream<< obj.id << ", " << obj.numberOfConnectedNodes << *(obj.avlTree);
+    myStream<< obj.id << ", " << obj.numberOfConnectedNodes << ", " << *obj.avlTree;
     return myStream;
 }
 
@@ -121,9 +121,11 @@ ostream& operator<< (ostream& myStream, Database& obj)
     //cout << "\nInside <<operator Database" << endl;
     //system("pause");
     //cout << "size of database" << obj.sizeOfDatabase << endl;
-    for(int i=0; i<obj.sizeOfDatabase; i++)
+    for(int i=0; i<obj.capacity; i++)
     {
-        myStream<< *(obj.theDatabase[i]) <<endl ;
+        if(obj.theDatabase[i]!=nullptr)
+            myStream<< i << " - " << *(obj.theDatabase[i]) <<endl ;
+
         //system("pause");
     }
     return myStream;
@@ -135,8 +137,11 @@ istream& operator>> (istream& myStream, Database& obj)
     {
         int leftParameter;
         int rightParameter;
+        int weightParameter;
         myStream >> leftParameter;
         myStream >> rightParameter;
-        obj.insertNewLink(leftParameter, rightParameter);
+        myStream >> weightParameter;
+        //cout << leftParameter << " " << rightParameter << " " << weightParameter << " " << endl;
+        obj.insertNewLink(leftParameter, rightParameter, weightParameter);
     }
 }

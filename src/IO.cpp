@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <cstring>
-#define MAX_AMOUNT_OF_PARAMS 2
+#define MAX_AMOUNT_OF_PARAMS 3
 
 
 
@@ -31,11 +31,11 @@ bool IO::readCommands(char *filename, Database *myDB)
             myStream.getline(myString, MAX_INPUT_SIZE_PER_LINE); // reads a line from the file
             command currentCommand = parseLine(myString); // parses the line read
             //------------------Debugging purposes-----------------
-            //cout << currentCommand.commandName << endl;
-            //for (int i=0;i<currentCommand.argc;i++)
-            //{
-            //    cout << currentCommand.argv[i] << endl;
-            //}
+            cout << currentCommand.commandName << endl;
+            for (int i=0;i<currentCommand.argc;i++)
+            {
+                cout << currentCommand.argv[i] << endl;
+            }
             //-----------------------------------------------------
             if (strcmp("READ_DATA", currentCommand.commandName)==0) // read from input file
             {
@@ -47,7 +47,7 @@ bool IO::readCommands(char *filename, Database *myDB)
             }
             else if (strcmp("INSERT_LINK", currentCommand.commandName)==0) // insert new link
             {
-                myDB->insertNewLink(atoi(currentCommand.argv[0]), atoi(currentCommand.argv[1]));
+                myDB->insertNewLink(atoi(currentCommand.argv[0]), atoi(currentCommand.argv[1]), atoi(currentCommand.argv[2]));
             }
             else if (strcmp("DELETE_LINK", currentCommand.commandName)==0) // delete existing link
             {

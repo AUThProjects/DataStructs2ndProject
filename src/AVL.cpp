@@ -53,22 +53,22 @@ void AVL::printTree(treeNode* root, ostream& myStream)
     if(root!= nullptr)
     {
         printTree(root->getLeft(), myStream);
-        myStream <<", " << root->getValue();
+        myStream <<", " << root->getValue() << '(' << root->getWeight() << ')';
         printTree(root->getRight(), myStream);
     }
 
 }
 
-void AVL::insertTreeNode(int idOfConnectedNode)
+void AVL::insertTreeNode(int idOfConnectedNode, int weight)
 {
-    head =  insertTreeNode(idOfConnectedNode, head); // calls the recursive private overloaded method with the head(root) of the tree
+    head =  insertTreeNode(idOfConnectedNode, weight, head); // calls the recursive private overloaded method with the head(root) of the tree
 }
 
-treeNode* AVL::insertTreeNode(int idOfConnectedNode, treeNode* root)
+treeNode* AVL::insertTreeNode(int idOfConnectedNode, int weight, treeNode* root)
 {
     if(root == nullptr)
     {
-        treeNode* newNode = new treeNode(idOfConnectedNode); // if nullptr, create a new node and add the value
+        treeNode* newNode = new treeNode(idOfConnectedNode, weight); // if nullptr, create a new node and add the value
         numberOfLeaves++; // increment the numberOfLeaves by 1
         return newNode; //return the new node (for recursion)
     }
@@ -76,12 +76,12 @@ treeNode* AVL::insertTreeNode(int idOfConnectedNode, treeNode* root)
     {
         if(idOfConnectedNode < root->getValue()) // (recursion) on the left
         {
-            root->setLeft(insertTreeNode(idOfConnectedNode, root->getLeft()));
+            root->setLeft(insertTreeNode(idOfConnectedNode, weight, root->getLeft()));
             return fixTree(root);
         }
         else if (idOfConnectedNode > root->getValue()) // (recursion) on the right
         {
-            root->setRight(insertTreeNode(idOfConnectedNode,root->getRight()));
+            root->setRight(insertTreeNode(idOfConnectedNode, weight, root->getRight()));
             return fixTree(root);
         }
         else

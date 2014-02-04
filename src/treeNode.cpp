@@ -7,6 +7,7 @@ treeNode::treeNode()
 {
     value = -1; // defaults to -1
     height = 1; // defaults to 1
+    weight = -1;
     leftChild = nullptr;
     rightChild = nullptr;
 }
@@ -16,6 +17,11 @@ treeNode::treeNode(int value) : treeNode()
     this->value = value;
 }
 
+treeNode::treeNode(int value, int weight) : treeNode(value)
+{
+    this->weight = weight;
+}
+
 treeNode::~treeNode()
 {
     // definitely not needed. If deleting a node, the tree beneath should not be deleted.
@@ -23,6 +29,11 @@ treeNode::~treeNode()
     delete(leftChild);
     delete(rightChild);
     */
+}
+
+int treeNode::getWeight()
+{
+    return this->weight;
 }
 
 int treeNode::getHeight()
