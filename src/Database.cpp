@@ -1,6 +1,9 @@
 #include "../include/Database.h"
 #include <cmath>
+#include <ctime>
+#include <climits>
 #define INITIAL_SIZE 100000
+
 
 using namespace std;
 
@@ -132,5 +135,30 @@ Node ** Database::searchNodeByID(int idToSearch)
 }
 
 
+Database::resultOfMST Database::calculateMST()
+{
+    clock_t beginTimestamp = clock();
+    Node ** theSet = new Node*[this->sizeOfDatabase];
+    int currentSetPosition = 0;
+    int sumOfCosts;
+    int firstNonNullPosition = -1;
+    int *idsContained = new int[this->sizeOfDatabase];
+    int currentContainedPosition = 0;
+    int *respectiveWeightsInAVL = new int[this->sizeOfDatabase];
+    for (int i=0;i<this->sizeOfDatabase;i++)
+    {
+        if (this->theDatabase[i]!=nullptr)
+        {
+            if (firstNonNullPosition == -1)
+                firstNonNullPosition = i;
+            idsContained[currentContainedPosition++] = theDatabase[i]->getID();
+        }
+        respectiveWeightsInAVL = INT_MAX; // instead of inf
+    }
+    theSet[currentSetPosition] = new Node(theDatabase[firstNonNullPosition]->getID());
+    theDatabase[firstNonNullPosition]
 
+    MinHeap connectedNodes()
+
+}
 

@@ -80,19 +80,66 @@ idWeightResult MinHeap::popMin()
     return toBeReturned;
 }
 
-bool MinHeap::editById(int id, int value)
+void MinHeap::editById(int id, int value)
 {
     int position = returnPosition(id);
     theMinHeap[position] = value;
-    if(theMinHeap[position] < theMinHeap[position/2])
-    {
-        // Case where the element has to go "up"
+    // two checks, mutually exclusive
+    // 1. Check if value<parent
+    // 2. Check if value>children
 
-    }
-    else if(theMinHeap[position] > theMinHeap[2*position + 1]
-            || theMinHeap[position] > theMinHeap[2*position + 1])
+    this->checkLower(position);
+    this->checkUpper(position);
 }
 
+void MinHeap::checkUpper(int position)
+{
+    while(position > 0)
+    {
+        int parentPosition = position/2;
+        if(theMinHeap[position] < theMinHeap[parentPosition])
+        {
+            // swap the parent with the child
+            int temp = theMinHeap[position];
+            theMinHeap[position] = theMinHeap[parentPosition];
+            theMinHeap[parentPosition] = temp;
+
+            temp = theIndex[position];
+            theIndex[position] = theIndex[parentPosition];
+            theIndex[parentPosition] = temp;
+
+            position = parentPosition;
+        }
+        else
+            return;
+    }
+}
+
+void MinHeap::checkLower(int position)
+{
+    int childPosition = 2*position+1;
+    while (childPosition < this->currentSize)
+    {
+        if (childPosition+1 < currentSize && theMinHeap[childPosition] > theMinHeap[childPosition+1])
+        {
+            childPosition = childPosition+1;
+        }
+        if (theMinHeap[position]>theMinHeap[childPosition])
+        {
+            // swap
+            int temp = theMinHeap[position];
+            theMinHeap[position] = theMinHeap[childPosition];
+            theMinHeap[childPosition] = temp;
+
+            temp = theIndex[position];
+            theIndex[position] = theIndex[childPosition];
+            theIndex[childPosition] = theIndex[position];
+            position = childPosition;
+        }
+        else
+            return;
+    }
+}
 int MinHeap::returnPosition(int id)
 {
     for(int i = 0; i< this->currentSize; i++)

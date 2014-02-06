@@ -19,6 +19,7 @@ class MinHeap
         bool insert(int key);
         int getMin(); // simply get the Node with the min cost
         idWeightResult popMin(); // get and delete from the heap the Node with the min cost
+        void editById(int id, int value);
 
     protected:
         int *theMinHeap;
@@ -28,6 +29,8 @@ class MinHeap
         int maxSize;
     private:
         bool makeHeap(int* array, int size);
+        void checkUpper(int position);
+        void checkLower(int position);
 
 };
 

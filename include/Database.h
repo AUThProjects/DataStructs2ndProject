@@ -17,6 +17,15 @@ class Database
 
     public:
         //ctor and dtor
+        struct resultOfMST
+        {
+            Node **MST;
+            int totalCost;
+            double timeElapsedInSec;
+        };
+        typedef struct resultOfMST resultOfMST;
+
+
         Database();
         virtual ~Database();
 
@@ -28,6 +37,7 @@ class Database
         bool insertNewLink(int leftId, int rightId, int weight);
         bool deleteExistingLink(int leftId, int rightId);
         int hashFunction(int key); // the hashing function
+        resultOfMST calculateMST();
 
 
     protected:
