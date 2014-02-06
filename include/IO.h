@@ -10,7 +10,7 @@ class IO
             {
                 char* commandName; // the command's name
                 int argc; // number of arguments (max 2)
-                char* argv[2]; // aguments
+                char* argv[3]; // aguments
             };
         typedef struct command command;
         command parseLine(char input[]); // parses a line from the commands file

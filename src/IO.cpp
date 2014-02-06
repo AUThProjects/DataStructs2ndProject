@@ -53,6 +53,18 @@ bool IO::readCommands(char *filename, Database *myDB)
             {
                 myDB->deleteExistingLink(atoi(currentCommand.argv[0]), atoi(currentCommand.argv[1]));
             }
+            else if (strcmp("MST", currentCommand.commandName)==0) // delete existing link
+            {
+                //mimimum spanning tree
+            }
+            else if (strcmp("CN", currentCommand.commandName)==0) // delete existing link
+            {
+                //common neighbours
+            }
+            else if (strcmp("SP", currentCommand.commandName)==0) // delete existing link
+            {
+                //Shortest path
+            }
             else // command not recognized
             {
                 cout << "unknown command" << endl;

@@ -28,6 +28,8 @@ class Database
         bool insertNewLink(int leftId, int rightId, int weight);
         bool deleteExistingLink(int leftId, int rightId);
         int hashFunction(int key); // the hashing function
+
+
     protected:
     private:
         // Data Structure --
