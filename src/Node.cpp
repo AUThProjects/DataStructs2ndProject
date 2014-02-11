@@ -72,3 +72,8 @@ int Node::getNumberOfConnectedNodes()
 {
     return numberOfConnectedNodes;
 }
+
+AVL* Node::getAVLTree()
+{
+    return Node->avlTree;
+}

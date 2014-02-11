@@ -38,6 +38,7 @@ class Database
         bool deleteExistingLink(int leftId, int rightId);
         int hashFunction(int key); // the hashing function
         resultOfMST calculateMST();
+        int commonNeighbours(Node* node1, Node* node2);
 
 
     protected:

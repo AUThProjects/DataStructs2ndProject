@@ -2,6 +2,8 @@
 #include "../include/treeNode.h"
 #include <iostream>
 #include <cmath>
+
+#define INITIAL_SIZE_OF_CN 100
 using namespace std;
 AVL::AVL()
 {
@@ -286,4 +288,78 @@ treeNode* AVL::fixTree(treeNode* node)
         }
     }
     return node;
+}
+
+
+treeNode* AVL::getInOrder(treeNode* root)
+{
+    static treeNode* inOrderArray[this->numberOfLeaves];
+    static int counter = 0;
+    if (root==null)
+        return inOrderArray;
+    else
+    {
+        getInOrder(root->left);
+        inOrderArray[counter++] = root;
+        getInOrder(root->right);
+    }
+}
+AVL::resultOfIntesection AVL::intersectWithAVL(AVL* avlForIntersection)
+{
+    AVL* biggestAVL = this;
+    int max_size = this->numberOfLeaves;
+    AVL* smallestAVL = avlForIntersection;
+    int min_size = avlForIntersection->numberOfLeaves;
+    // take the biggest avl
+    if (max_size < min_size)
+    {
+        smallestAVL = biggestAVL;
+        biggestAVL = avlForIntersection;
+        min_size = max_size;
+        max_size = biggestAVL->numberOfLeaves;
+
+    }
+    simpleHashTable *sht = new simpleHashTable(2*max_size);
+    treeNode* arrayOfInorder[max_size];
+    arrayOfInorder = biggestAVL->getInOrder(biggestAVL->root);
+
+
+    for (int i=0;i<max_size;i++)
+    {
+        sht->addElement(&arrayOfInorder[i]);
+    }
+
+    arrayOfInorder = smallestAVL->getInOrder(smallestAVL->root);
+
+    int * arrayOfCommonNeighbours = new int[INITIAL_SIZE_OF_CN];
+    int counter = 0;
+    int maxSizeOfCN = INITIAL_SIZE_OF_CN;
+    for (int i=0;i<min_size;i++)
+    {
+        if (counter>maxSizeOfCN)
+        {
+            reallocateArray(&arrayOfCommonNeighbours, &maxSizeOfCN);
+        }
+        if (sht->exists(arrayOfInorder[i])
+        {
+            arrayOfCommonNeighbours[counter++] = arrayOfInorder[i]->getValue();
+        }
+    }
+
+    resultOfIntesection theResult;
+    theResult.commonNodes = arrayOfCommonNeighbours;
+    theResult.sizeOfArray = counter;
+    return theResult;
+}
+
+void AVL::reallocateArray(int **theArray, int* currentSize)
+{
+    int *newArray = new int[currentSize*2];
+    for(int i=0;i<currentSize;i++)
+    {
+        newArray[i] = *theArray[i];
+    }
+    delete *theArray;
+    *theArray = newArray;
+    *currentSize *= 2;
 }

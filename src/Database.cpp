@@ -162,3 +162,9 @@ Database::resultOfMST Database::calculateMST()
 
 }
 
+int Database::commonNeighbours(Node* node1, Node* node2)
+{
+    AVL::resultOfIntesection res = node1->getAVLTree()->intersectWithAVL(node2->getAVLTree());
+    return res.sizeOfArray;
+}
+

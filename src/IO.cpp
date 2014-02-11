@@ -60,6 +60,7 @@ bool IO::readCommands(char *filename, Database *myDB)
             else if (strcmp("CN", currentCommand.commandName)==0) // delete existing link
             {
                 //common neighbours
+                myDB->commonNeighbours(atoi(currentCommand.argv[0]), atoi(currentCommand.argv[1]));
             }
             else if (strcmp("SP", currentCommand.commandName)==0) // delete existing link
             {

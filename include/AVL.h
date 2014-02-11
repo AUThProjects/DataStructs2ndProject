@@ -20,6 +20,12 @@ class AVL
         typedef struct treeNode treeNode;
         */
     public:
+        struct resultOfIntesection
+        {
+            int* commonNodes;
+            int sizeOfArray;
+        };
+        typedef struct resultOfIntesection resultOfIntesection;
         AVL(); //ctor
         virtual ~AVL(); //dtor
         //operator overloads
@@ -32,6 +38,8 @@ class AVL
         //bool hasConnectedNode(int idOfConnectedNode); // not implemented
         void printTree(treeNode* root, ostream& myStream); // prints inOrder
         //void print(); needed when printing without operator overload
+
+        resultOfIntesection intersectWithAVL(AVL* avlForIntersection);
     protected:
     private:
         // member variables
@@ -41,6 +49,7 @@ class AVL
         treeNode* insertTreeNode(int idOfConnectedNode,int weight, treeNode* root);
         treeNode* deleteTreeNode(int idOfConnectedNode, treeNode * root);
 
+        treeNode getInOrder(treeNode *root);
         static int calculateBf(treeNode* node); // returns the bf of a specific node
         //bool findTreeNode(int value); not implemented
 
@@ -51,6 +60,8 @@ class AVL
         static treeNode* rotateLR(treeNode* node); // Makes a LR rotation
         static treeNode* rotateRL(treeNode* node); // Makes a RL rotation
         static treeNode* fixTree(treeNode* node); // called for fixing the tree, when inserting nodes
+
+        void reallocateArray(int** theArray, int currentSize);
 };
 
 #endif // AVL_H
