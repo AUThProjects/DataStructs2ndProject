@@ -7,16 +7,18 @@ class simpleHashTable
 {
     public:
         simpleHashTable(int sizeToInitializeTo);
+        simpleHashTable(int sizeToInitializeTo, int defaultValue);
         virtual ~simpleHashTable();
         int getCapacity();
         int getCurrentSize();
-        *treeNode getElement(int value);
-        bool addElement(treeNode* value);
-        bool exists(treeNode* toCompare);
+        int getElement(int value);
+        bool addElement(int value);
+        bool exists(int toCompare);
+
     protected:
     private:
         int hashFunction(int value);
-        treeNode** theArray; // T** for nullable
+        int* theArray; // T** for nullable
         int capacity;
         int currentSize;
 };

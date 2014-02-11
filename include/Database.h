@@ -39,7 +39,7 @@ class Database
         int hashFunction(int key); // the hashing function
         resultOfMST calculateMST();
         int commonNeighbours(Node* node1, Node* node2);
-
+        int shortestPath_Dijkstra(int idOfStartingNode);
 
     protected:
     private:

@@ -168,3 +168,16 @@ int Database::commonNeighbours(Node* node1, Node* node2)
     return res.sizeOfArray;
 }
 
+int Database::shortestPath_Dijkstra(int idOfStartingNode)
+{
+    simpleHashTable *previous = new simpleHashTable(2*sizeOfDatabase);
+    simpleHashTable *distance = new simpleHashTable(2*sizeOfDatabase, INT_MAX);
+
+    int* mySet = new int[sizeOfDatabase];
+    MinHeap* myQ = new MinHeap(sizeOfDatabase);
+
+
+
+
+}
+

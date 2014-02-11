@@ -60,7 +60,8 @@ bool IO::readCommands(char *filename, Database *myDB)
             else if (strcmp("CN", currentCommand.commandName)==0) // delete existing link
             {
                 //common neighbours
-                myDB->commonNeighbours(atoi(currentCommand.argv[0]), atoi(currentCommand.argv[1]));
+                int cn = myDB->commonNeighbours(atoi(currentCommand.argv[0]), atoi(currentCommand.argv[1]));
+                this->writeCN("output.txt", cn);
             }
             else if (strcmp("SP", currentCommand.commandName)==0) // delete existing link
             {
@@ -146,4 +147,21 @@ bool IO::writeIndex(char *filename, Database *myDB)
         return false;
     }
 
+}
+
+bool IO::writeCN(char* filename, int numberOfCommonNeighbours)
+{
+    ofstream myStream;
+    myStream.open(filename, ios_base::out);
+    if (myStream) // file found
+    {
+        myStream << numberOfCommonNeighbours << endl;
+        myStream.close()
+        return true;
+    }
+    else
+    {
+        cout << "Error while loading " << filename << endl;
+        return false;
+    }
 }

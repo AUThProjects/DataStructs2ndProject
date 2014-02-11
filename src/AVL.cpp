@@ -326,7 +326,7 @@ AVL::resultOfIntesection AVL::intersectWithAVL(AVL* avlForIntersection)
 
     for (int i=0;i<max_size;i++)
     {
-        sht->addElement(&arrayOfInorder[i]);
+        sht->addElement(arrayOfInorder[i]->getValue());
     }
 
     arrayOfInorder = smallestAVL->getInOrder(smallestAVL->root);
@@ -340,7 +340,7 @@ AVL::resultOfIntesection AVL::intersectWithAVL(AVL* avlForIntersection)
         {
             reallocateArray(&arrayOfCommonNeighbours, &maxSizeOfCN);
         }
-        if (sht->exists(arrayOfInorder[i])
+        if (sht->exists(arrayOfInorder[i]->getValue())
         {
             arrayOfCommonNeighbours[counter++] = arrayOfInorder[i]->getValue();
         }

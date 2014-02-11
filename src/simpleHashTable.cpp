@@ -1,3 +1,4 @@
+#include <climits>
 #include "../include/simpleHashTable.h"
 #define A_BIG_PRIME_NUMBER 993319
 
@@ -5,15 +6,29 @@
 simpleHashTable::simpleHashTable(int sizeToInitializeTo)
 {
     //ctor
-    this->theArray = new T*[sizeToInitializeTo];
+    this->theArray = new int[sizeToInitializeTo];
     this->capacity = sizeToInitializeTo;
     this->currentSize = 0;
     for (int i=0;i<capacity;++i)
     {
-        this->theArray+i = nullptr;
+        this->theArray+i = -INT_MAX;
     }
 
 }
+
+simpleHashTable::simpleHashTable(int sizeToInitializeTo, int defaultValue)
+{
+    //ctor
+    this->theArray = new int[sizeToInitializeTo];
+    this->capacity = sizeToInitializeTo;
+    this->currentSize = 0;
+    for (int i=0;i<capacity;++i)
+    {
+        this->theArray+i = defaultValue;
+    }
+
+}
+
 
 simpleHashTable::~simpleHashTable()
 {
@@ -32,14 +47,14 @@ int simpleHashTable::hashFunction(int value)
     return (value%A_BIG_PRIME_NUMBER)%capacity;
 }
 
-bool simpleHashTable::addElement(treeNode* toBeAdded)
+bool simpleHashTable::addElement(int id)
 {
-    int hashingPosition = hashFunction((toBeAdded->getValue());
+    int hashingPosition = hashFunction(id);
     bool flag = false;
     while (!flag && hashingPosition < capacity)
-    if (theArray[hashingPosition]==nullptr)
+    if (theArray[hashingPosition]==-INT_MAX)
     {
-        theArray[hashingPosition] = toBeAdded;
+        theArray[hashingPosition] = id;
         flag = true;
     }
     else
@@ -49,15 +64,15 @@ bool simpleHashTable::addElement(treeNode* toBeAdded)
     return flag;
 }
 
-bool simpleHashTable::exists(treeNode* toCompare)
+bool simpleHashTable::exists(int id)
 {
-    int hashingPosition = hashFunction(toCompare->getValue());
+    int hashingPosition = hashFunction(id);
     bool result = false;
     while (!result)
     {
-        if (theArray[hashingPosition] == nullptr)
+        if (theArray[hashingPosition] == -INT_MAX)
             return false;
-        if (theArray[hashingPosition] == toCompare->getValue())
+        if (theArray[hashingPosition] == id)
         {
             result = true;
             return result;
