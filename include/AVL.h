@@ -39,6 +39,8 @@ class AVL
         void printTree(treeNode* root, ostream& myStream); // prints inOrder
         //void print(); needed when printing without operator overload
 
+        treeNode* getHead();
+        treeNode* getInOrder(treeNode *root);
         resultOfIntesection intersectWithAVL(AVL* avlForIntersection);
     protected:
     private:
@@ -49,7 +51,7 @@ class AVL
         treeNode* insertTreeNode(int idOfConnectedNode,int weight, treeNode* root);
         treeNode* deleteTreeNode(int idOfConnectedNode, treeNode * root);
 
-        treeNode getInOrder(treeNode *root);
+
         static int calculateBf(treeNode* node); // returns the bf of a specific node
         //bool findTreeNode(int value); not implemented
 

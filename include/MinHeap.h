@@ -1,34 +1,34 @@
 #ifndef MINHEAP_H
 #define MINHEAP_H
-
+#include "ComplexHashTable.h"
 
 class MinHeap
 {
     public:
-        struct idWeightResult
+        struct minHeapEntry
         {
             int id;
             int weight;
         };
-        typedef struct idWeightResult idWeightResult;
+        typedef struct minHeapEntry minHeapEntry;
 
         MinHeap();
-        MinHeap(int* array, int* indexArray ,int size);
+        MinHeap(AVL *anAVL ,int size);
         virtual ~MinHeap();
 
-        bool insert(int key);
+        bool insert(minHeapEntry key);
         int getMin(); // simply get the Node with the min cost
-        idWeightResult popMin(); // get and delete from the heap the Node with the min cost
+        minHeapEntry* popMin(); // get and delete from the heap the Node with the min cost
         void editById(int id, int value);
 
     protected:
-        int *theMinHeap;
-        int *theIndex;
+        minHeapEntry **theMinHeap;
+        ComplexHashTable* theIndex;
 
         int currentSize;
         int maxSize;
     private:
-        bool makeHeap(int* array, int size);
+        bool makeHeap();
         void checkUpper(int position);
         void checkLower(int position);
 

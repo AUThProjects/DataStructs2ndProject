@@ -10,13 +10,17 @@ Comments:
 
 MinHeap::MinHeap(int size)
 {
-    theMinHeap = new int[size];
-    theIndex = new int[size];
+    theMinHeap = new minHeapEntry*[size];
+    for(int i = 0 ; i< size; i++)
+    {
+        theMinHeap[i] = nullptr;
+    }
+    theIndex = new ComplexHashTable(size*2);
 
     this->maxSize = size;
 }
 
-MinHeap::MinHeap(int* array, int* indexArray ,int size): MinHeap(size)
+MinHeap::MinHeap(AVL *anAVL ,int size): MinHeap(size)
 {
     if(theMinHeap!=nullptr)
     {
@@ -28,15 +32,30 @@ MinHeap::MinHeap(int* array, int* indexArray ,int size): MinHeap(size)
         delete[] (theIndex);
         theIndex = nullptr;
     }
-    this->theMinHeap = array;
-    this->theIndex = indexArray;
+    treeNode* inOrderArray = anAVL->getInOrder(anAVL->getHead());
+    minHeapEntry** initialMinHeapArray = new minHeapEntry*[size];
+    for(int i=0; i<size; i++)
+    {
+        initialMinHeapArray[i] = new minHeapEntry;
+        initialMinHeapArray[i]->id = inOrderArray[i]->getValue();
+        initialMinHeapArray[i]->weight = inOrderArray[i]->getWeight();
+        ComplexHashTable::complexHashEntry* entry = new ComplexHashTable::complexHashEntry;
+        entry->id = inOrderArray[i]->getValue();
+        entry->weight = inOrderArray[i]->getWeight();
+        entry->position = i;
+        this->theIndex->addElement(entry);
+    }
+
+    this->theMinHeap = initialMinHeapArray;
     this->currentSize = size;
-    makeHeap(array, size);
+    makeHeap();
 }
 
 MinHeap::~MinHeap()
 {
     //dtor
+    // Has to delete each struct.
+
 }
 
 bool MinHeap::insert(int key)
@@ -52,44 +71,46 @@ int MinHeap::getMin()
     return theMinHeap[0];
 }
 
-idWeightResult MinHeap::popMin()
+minHeapEntry* MinHeap::popMin()
 {
     if(currentSize==0)
         throw -2; //Out of bounds..
 
-    idWeightResult toBeReturned;
-    toBeReturned.id = theIndex[0];
-    toBeReturned.weight = theMinHeap[0];
+    minHeapEntry toBeReturned;
+    toBeReturned.id = theMinHeap[0]->id;
+    toBeReturned.weight = theMinHeap[0]->weight;
 
-    int y = theMinHeap[currentSize-- - 1];
+    minHeapEntry* lastElementInHeap = theMinHeap[currentSize-- - 1];
 
-    int i = 0;
-    int child = 1;
-    while(child <= currentSize)
-    {
-        if(child<currentSize && theMinHeap[child] > theMinHeap[child +1])
-            child++;
-        if(y < theMinHeap[child])
-            break;
+    int posOfCheckingNode = 0;
+    theMinHeap[i] = lastElementInHeap; //put the last element in the position of the root
+    theIndex->getElement(theMinHeap[i]->id)->position = 0; //changes the last element's position in the index
 
-        theMinHeap[i] = theMinHeap[child];
-        i = child;
-        child *=2;
-    }
-    heap[i] = y;
+    checkLower(posOfCheckingNode);
+
     return toBeReturned;
 }
 
 void MinHeap::editById(int id, int value)
 {
-    int position = returnPosition(id);
-    theMinHeap[position] = value;
+    // get the element from the index with the id provided
+    ComplexHashTable::complexHashEntry* elementToChange = theIndex->getElement(id);
+    int positionToCheck = elementToChange->position;
+
+    elementToChange->weight = value;
+
+    // change inside the minHeap;
+    theMinHeap[positionToCheck]->weight = value;
+
+    // make the necessary checks
+
     // two checks, mutually exclusive
     // 1. Check if value<parent
     // 2. Check if value>children
+    // 3. Check if parent<value<minOfChildren
 
-    this->checkLower(position);
-    this->checkUpper(position);
+    this->checkLower(positionToCheck);
+    this->checkUpper(positionToCheck);
 }
 
 void MinHeap::checkUpper(int position)
@@ -100,13 +121,13 @@ void MinHeap::checkUpper(int position)
         if(theMinHeap[position] < theMinHeap[parentPosition])
         {
             // swap the parent with the child
-            int temp = theMinHeap[position];
+            minHeapEntry* temp = theMinHeap[position];
             theMinHeap[position] = theMinHeap[parentPosition];
             theMinHeap[parentPosition] = temp;
 
-            temp = theIndex[position];
-            theIndex[position] = theIndex[parentPosition];
-            theIndex[parentPosition] = temp;
+            theIndex->getElement(theMinHeap[position])->position = parentPosition;
+            theIndex->getElement(theMinHeap[parentPosition])->position = position;
+
 
             position = parentPosition;
         }
@@ -115,29 +136,68 @@ void MinHeap::checkUpper(int position)
     }
 }
 
-void MinHeap::checkLower(int position)
+void MinHeap::checkLower(int posOfCheckingNode)
 {
-    int childPosition = 2*position+1;
-    while (childPosition < this->currentSize)
+    while(posOfCheckingNode < currentSize)
     {
-        if (childPosition+1 < currentSize && theMinHeap[childPosition] > theMinHeap[childPosition+1])
+        //find min of children, if it has children
+        //3 alternatives
+        //1. no children (leaf)
+        //2. one child (swap)
+        //3. two children (find min and swap)
+        int firstChildPosition = posOfCheckingNode*2+1;
+        if (firstChildPosition >= currentSize && fistChildPosition+1 >= currentSize)
         {
-            childPosition = childPosition+1;
+            // case 1.
+            // do nothing.
         }
-        if (theMinHeap[position]>theMinHeap[childPosition])
+        else if (firstChildPosition+1 == currentSize)
         {
-            // swap
-            int temp = theMinHeap[position];
-            theMinHeap[position] = theMinHeap[childPosition];
-            theMinHeap[childPosition] = temp;
+            // case 2.
+            // check and swap
+            if (theMinHeap[firstChildPosition]->weight < theMinHeap[posOfCheckingNode]->weight)
+            {
+                int parentID = minHeapEntry[posOfCheckingNode]->id;
+                int childID = minHeapEntry[firstChildPosition]->id;
+                // swap
+                minHeapEntry *temp = theMinHeap[firstChildPosition];
+                theMinHeap[firstChildPosition] = theMinHeap[posOfCheckingNode];
+                theMinHeap[posOfCheckingNode] = temp;
 
-            temp = theIndex[position];
-            theIndex[position] = theIndex[childPosition];
-            theIndex[childPosition] = theIndex[position];
-            position = childPosition;
+                // change the index
+                int parentPosition = theIndex->getElement(parentID)->position;
+                theIndex->getElement(parentID)->position = theIndex->getElement(childID)->position;
+                theIndex->getElement(childID)->position = parentPosition;
+
+                posOfCheckingNode *=2;
+            }
         }
-        else
-            return;
+        else if (firstChildPosition < currentSize && firstChildPosition+1 < currentSize)
+        {
+            // case 3.
+            // find min weight between child nodes
+            minHeapEntry** minElement = &theMinHeap[firstChildPosition];
+            if (*(minElement)->weight > theMinHeap[firstChildPosition+1]->weight)
+            {
+                minElement = &theMinHeap[firstChildPosition+1];
+            }
+
+            if (*(minElement)->weight < theMinHeap[posOfCheckingNode]->weight)
+            {
+                int parentID = minHeapEntry[posOfCheckingNode]->id;
+                int childID = *(minElement)->id;
+                // swap
+                minHeapEntry *temp = *minElement;
+                *minElement = theMinHeap[posOfCheckingNode];
+                theMinHeap[posOfCheckingNode] = temp;
+
+                // change the index
+                int parentPosition = theIndex->getElement(parentID)->position;
+                theIndex->getElement(parentID)->position = theIndex->getElement(childID)->position;
+                theIndex->getElement(childID)->position = parentPosition;
+                posOfCheckingNode *=2;
+            }
+        }
     }
 }
 int MinHeap::returnPosition(int id)
@@ -149,27 +209,30 @@ int MinHeap::returnPosition(int id)
     }
 }
 
-bool MinHeap::makeHeap(int* array, int size)
+bool MinHeap::makeHeap()
 {
 
     for(int i = currentSize/2; i>=0; i--)
     {
-        int root = theMinHeap[i];
+        minHeapEntry* root = theMinHeap[i];
 
         int child = 2*i +1;
 
         while(child <= currentSize)
         {
-            if(child<currentSize && theMinHeap[child] > theMinHeap[child+1])
+            if(child<currentSize && theMinHeap[child]->weight > theMinHeap[child+1]->weight)
                 child++;
-            if(root < theMinHeap[child])
+            if(root->weight < theMinHeap[child]->weight)
                 break;
 
+            //Check for potential mistakes
             theMinHeap[child/2] = theMinHeap[child];
-            theIndex[child/2] = theIndex[child];
+            ComplexHashTable::complexHashEntry* element = theIndex->getElement(theMinHeap[child/2]->id);
+            element->position = child;
             child *= 2;
         }
         theMinHeap[child/2] = root;
-        theIndex[child/2] = theIndex[i];
+        ComplexHashTable::complexHashEntry* element = theIndex->getElement(theMinHeap[child/2]->id);
+        element->position = i;
     }
 }

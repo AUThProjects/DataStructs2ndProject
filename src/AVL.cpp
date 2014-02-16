@@ -304,6 +304,12 @@ treeNode* AVL::getInOrder(treeNode* root)
         getInOrder(root->right);
     }
 }
+
+treeNode* AVL::getHead()
+{
+    return this->head;
+}
+
 AVL::resultOfIntesection AVL::intersectWithAVL(AVL* avlForIntersection)
 {
     AVL* biggestAVL = this;
