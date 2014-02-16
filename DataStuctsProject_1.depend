@@ -129,3 +129,63 @@
 	<cstdlib>
 	<cstring>
 
+1391702484 source:c:\users\stefanos\documents\github\datastructs2ndproject\main.cpp
+	<iostream>
+	"include/AVL.h"
+	<cstdlib>
+	"include/Database.h"
+	"include/IO.h"
+
+1392569965 c:\users\stefanos\documents\github\datastructs2ndproject\include\avl.h
+	<iostream>
+	"../include/treeNode.h"
+
+1391702484 c:\users\stefanos\documents\github\datastructs2ndproject\include\treenode.h
+
+1392570968 c:\users\stefanos\documents\github\datastructs2ndproject\include\database.h
+	"Node.h"
+
+1392132024 c:\users\stefanos\documents\github\datastructs2ndproject\include\node.h
+	"../include/AVL.h"
+
+1392142333 c:\users\stefanos\documents\github\datastructs2ndproject\include\io.h
+	"Database.h"
+
+1392570012 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\avl.cpp
+	"../include/AVL.h"
+	"../include/treeNode.h"
+	"../include/simpleHashTable.h"
+	<iostream>
+	<cmath>
+
+1392144652 c:\users\stefanos\documents\github\datastructs2ndproject\include\simplehashtable.h
+	"treeNode.h"
+
+1392570141 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\complexhashtable.cpp
+
+1392570936 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\database.cpp
+	"../include/Database.h"
+	<cmath>
+	<ctime>
+	<climits>
+
+1392570979 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\io.cpp
+	"../include/IO.h"
+	<fstream>
+	<cstdlib>
+	<cstring>
+
+1392571443 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\minheap.cpp
+
+1392571462 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\node.cpp
+	"../include/Node.h"
+
+1392571533 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\simplehashtable.cpp
+	<climits>
+	"../include/simpleHashTable.h"
+
+1391702484 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\treenode.cpp
+	"../include/treeNode.h"
+	<cmath>
+	<iostream>
+

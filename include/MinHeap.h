@@ -1,6 +1,7 @@
 #ifndef MINHEAP_H
 #define MINHEAP_H
 #include "ComplexHashTable.h"
+#include "AVL.h"
 
 class MinHeap
 {
@@ -12,13 +13,13 @@ class MinHeap
         };
         typedef struct minHeapEntry minHeapEntry;
 
-        MinHeap();
+        MinHeap(int size);
         MinHeap(AVL *anAVL ,int size);
         virtual ~MinHeap();
 
         bool insert(minHeapEntry key);
         int getMin(); // simply get the Node with the min cost
-        minHeapEntry* popMin(); // get and delete from the heap the Node with the min cost
+        minHeapEntry popMin(); // get and delete from the heap the Node with the min cost
         void editById(int id, int value);
 
     protected:

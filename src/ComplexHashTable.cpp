@@ -6,7 +6,7 @@ Anagnostou Antonis
 Comments:
 
 
-*/#include "ComplexHashTable.h"
+*/#include "../include/ComplexHashTable.h"
 #define A_BIG_PRIME_NUMBER 993319
 
 ComplexHashTable::ComplexHashTable(int sizeToInitializeTo)
@@ -31,7 +31,7 @@ int ComplexHashTable::getCapacity()
 int ComplexHashTable::getCurrentSize()
 { return this->currentSize; }
 
-complexHashEntry* ComplexHashTable::getElement(int id)
+ComplexHashTable::complexHashEntry* ComplexHashTable::getElement(int id)
 {
     int hashingPosition = hashFunction(id);
     complexHashEntry* result = nullptr;
@@ -49,6 +49,7 @@ complexHashEntry* ComplexHashTable::getElement(int id)
             hashingPosition = (1+hashingPosition)%capacity;
         }
     }
+    return nullptr;
 }
 bool ComplexHashTable::addElement(complexHashEntry* value)
 {
@@ -84,6 +85,7 @@ bool ComplexHashTable::exists(int id)
             hashingPosition = (1+hashingPosition)%capacity;
         }
     }
+    return false;
 }
 int ComplexHashTable::hashFunction(int value)
 {

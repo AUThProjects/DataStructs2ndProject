@@ -38,7 +38,8 @@ class Database
         bool deleteExistingLink(int leftId, int rightId);
         int hashFunction(int key); // the hashing function
         resultOfMST calculateMST();
-        int commonNeighbours(Node* node1, Node* node2);
+        int commonNeighbours(int idOfNode1, int idOfNode2);
+
         int shortestPath_Dijkstra(int idOfStartingNode);
 
     protected:
@@ -52,6 +53,7 @@ class Database
         int hashFunction(int key, int iteration);
         int auxHashFunction1(int key);
         int auxHashFunction2(int key);
+        int commonNeighbours(Node* node1, Node* node2);
 
 
 

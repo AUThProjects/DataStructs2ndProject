@@ -16,7 +16,7 @@ class ComplexHashTable
         virtual ~ComplexHashTable();
         int getCapacity();
         int getCurrentSize();
-        int getElement(int value);
+        complexHashEntry* getElement(int value);
         bool addElement(complexHashEntry* value);
         bool exists(int toCompare);
     protected:

@@ -156,7 +156,7 @@ bool IO::writeCN(char* filename, int numberOfCommonNeighbours)
     if (myStream) // file found
     {
         myStream << numberOfCommonNeighbours << endl;
-        myStream.close()
+        myStream.close();
         return true;
     }
     else

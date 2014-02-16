@@ -40,7 +40,8 @@ class AVL
         //void print(); needed when printing without operator overload
 
         treeNode* getHead();
-        treeNode* getInOrder(treeNode *root);
+        treeNode** getInOrder(treeNode *root);
+        void  getInOrderRecursive(treeNode* root, treeNode* inOrderArray[], int* counter);
         resultOfIntesection intersectWithAVL(AVL* avlForIntersection);
     protected:
     private:
@@ -63,7 +64,7 @@ class AVL
         static treeNode* rotateRL(treeNode* node); // Makes a RL rotation
         static treeNode* fixTree(treeNode* node); // called for fixing the tree, when inserting nodes
 
-        void reallocateArray(int** theArray, int currentSize);
+        void reallocateArray(int** theArray, int* currentSize);
 };
 
 #endif // AVL_H

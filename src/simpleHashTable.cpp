@@ -11,7 +11,7 @@ simpleHashTable::simpleHashTable(int sizeToInitializeTo)
     this->currentSize = 0;
     for (int i=0;i<capacity;++i)
     {
-        this->theArray+i = -INT_MAX;
+        this->theArray[i] = -INT_MAX;
     }
 
 }
@@ -24,7 +24,7 @@ simpleHashTable::simpleHashTable(int sizeToInitializeTo, int defaultValue)
     this->currentSize = 0;
     for (int i=0;i<capacity;++i)
     {
-        this->theArray+i = defaultValue;
+        this->theArray[i] = defaultValue;
     }
 
 }

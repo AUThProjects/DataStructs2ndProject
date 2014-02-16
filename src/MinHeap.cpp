@@ -6,7 +6,8 @@ Anagnostou Antonis
 Comments:
 
 
-*/#include "MinHeap.h"
+*/#include "../include/MinHeap.h"
+
 
 MinHeap::MinHeap(int size)
 {
@@ -32,7 +33,7 @@ MinHeap::MinHeap(AVL *anAVL ,int size): MinHeap(size)
         delete[] (theIndex);
         theIndex = nullptr;
     }
-    treeNode* inOrderArray = anAVL->getInOrder(anAVL->getHead());
+    treeNode** inOrderArray = anAVL->getInOrder(anAVL->getHead());
     minHeapEntry** initialMinHeapArray = new minHeapEntry*[size];
     for(int i=0; i<size; i++)
     {
@@ -58,20 +59,15 @@ MinHeap::~MinHeap()
 
 }
 
-bool MinHeap::insert(int key)
-{
-    return true;
-}
-
 int MinHeap::getMin()
 {
     if(currentSize==0)
         throw -2; //Out of bounds..
 
-    return theMinHeap[0];
+    return theMinHeap[0]->weight;
 }
 
-minHeapEntry* MinHeap::popMin()
+MinHeap::minHeapEntry MinHeap::popMin()
 {
     if(currentSize==0)
         throw -2; //Out of bounds..
@@ -83,8 +79,8 @@ minHeapEntry* MinHeap::popMin()
     minHeapEntry* lastElementInHeap = theMinHeap[currentSize-- - 1];
 
     int posOfCheckingNode = 0;
-    theMinHeap[i] = lastElementInHeap; //put the last element in the position of the root
-    theIndex->getElement(theMinHeap[i]->id)->position = 0; //changes the last element's position in the index
+    theMinHeap[0] = lastElementInHeap; //put the last element in the position of the root
+    theIndex->getElement(theMinHeap[0]->id)->position = 0; //changes the last element's position in the index
 
     checkLower(posOfCheckingNode);
 
@@ -125,8 +121,8 @@ void MinHeap::checkUpper(int position)
             theMinHeap[position] = theMinHeap[parentPosition];
             theMinHeap[parentPosition] = temp;
 
-            theIndex->getElement(theMinHeap[position])->position = parentPosition;
-            theIndex->getElement(theMinHeap[parentPosition])->position = position;
+            theIndex->getElement(theMinHeap[position]->id)->position = position;
+            theIndex->getElement(theMinHeap[parentPosition]->id)->position = parentPosition;
 
 
             position = parentPosition;
@@ -146,7 +142,7 @@ void MinHeap::checkLower(int posOfCheckingNode)
         //2. one child (swap)
         //3. two children (find min and swap)
         int firstChildPosition = posOfCheckingNode*2+1;
-        if (firstChildPosition >= currentSize && fistChildPosition+1 >= currentSize)
+        if (firstChildPosition >= currentSize && firstChildPosition+1 >= currentSize)
         {
             // case 1.
             // do nothing.
@@ -157,8 +153,8 @@ void MinHeap::checkLower(int posOfCheckingNode)
             // check and swap
             if (theMinHeap[firstChildPosition]->weight < theMinHeap[posOfCheckingNode]->weight)
             {
-                int parentID = minHeapEntry[posOfCheckingNode]->id;
-                int childID = minHeapEntry[firstChildPosition]->id;
+                int parentID = theMinHeap[posOfCheckingNode]->id;
+                int childID = theMinHeap[firstChildPosition]->id;
                 // swap
                 minHeapEntry *temp = theMinHeap[firstChildPosition];
                 theMinHeap[firstChildPosition] = theMinHeap[posOfCheckingNode];
@@ -177,15 +173,15 @@ void MinHeap::checkLower(int posOfCheckingNode)
             // case 3.
             // find min weight between child nodes
             minHeapEntry** minElement = &theMinHeap[firstChildPosition];
-            if (*(minElement)->weight > theMinHeap[firstChildPosition+1]->weight)
+            if ((*minElement)->weight > theMinHeap[firstChildPosition+1]->weight)
             {
                 minElement = &theMinHeap[firstChildPosition+1];
             }
 
-            if (*(minElement)->weight < theMinHeap[posOfCheckingNode]->weight)
+            if ((*minElement)->weight < theMinHeap[posOfCheckingNode]->weight)
             {
-                int parentID = minHeapEntry[posOfCheckingNode]->id;
-                int childID = *(minElement)->id;
+                int parentID = theMinHeap[posOfCheckingNode]->id;
+                int childID = (*minElement)->id;
                 // swap
                 minHeapEntry *temp = *minElement;
                 *minElement = theMinHeap[posOfCheckingNode];
@@ -200,14 +196,7 @@ void MinHeap::checkLower(int posOfCheckingNode)
         }
     }
 }
-int MinHeap::returnPosition(int id)
-{
-    for(int i = 0; i< this->currentSize; i++)
-    {
-        if(this->theIndex[i] == id)
-            return i;
-    }
-}
+
 
 bool MinHeap::makeHeap()
 {

@@ -33,17 +33,21 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="include/AVL.h" />
+		<Unit filename="include/ComplexHashTable.h" />
 		<Unit filename="include/Database.h" />
 		<Unit filename="include/IO.h" />
 		<Unit filename="include/MinHeap.h" />
 		<Unit filename="include/Node.h" />
+		<Unit filename="include/simpleHashTable.h" />
 		<Unit filename="include/treeNode.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/AVL.cpp" />
+		<Unit filename="src/ComplexHashTable.cpp" />
 		<Unit filename="src/Database.cpp" />
 		<Unit filename="src/IO.cpp" />
 		<Unit filename="src/MinHeap.cpp" />
 		<Unit filename="src/Node.cpp" />
+		<Unit filename="src/simpleHashTable.cpp" />
 		<Unit filename="src/treeNode.cpp" />
 		<Extensions>
 			<code_completion />

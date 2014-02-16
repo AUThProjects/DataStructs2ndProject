@@ -34,7 +34,6 @@ Database::~Database()
 
 int Database::hashFunction(int key)
 {
-    int result = 0;
     int myIterator = 0;
     int pos = 0;
     if (key<0)
@@ -92,7 +91,7 @@ bool Database::insertNewLink(int leftId, int rightId, int weight)
 
         if (theDatabase[hashFunction(leftId)] != nullptr)
         {
-            theDatabase[hashFunction(leftId)]->addNewNode(rightId, weight);
+            toBeReturned = theDatabase[hashFunction(leftId)]->addNewNode(rightId, weight);
         }
         else
         {
@@ -108,21 +107,24 @@ bool Database::insertNewLink(int leftId, int rightId, int weight)
     }
     //cout << *theDatabase[hashFunction(leftId)] << endl;
     cout << *this << endl;
+    return toBeReturned;
 }
 
 
 bool Database::deleteExistingLink(int leftId, int rightId)
 {
+    bool toBeReturned = false;
     for (int i=0;i<=1;++i)
     {
         if (theDatabase[hashFunction(leftId)] != nullptr)
         {
-            theDatabase[hashFunction(leftId)]->deleteNode(rightId);
+            toBeReturned = theDatabase[hashFunction(leftId)]->deleteNode(rightId);
         }
         int temp = leftId;
         leftId = rightId;
         rightId = temp;
     }
+    return toBeReturned;
 }
 
 
@@ -137,6 +139,7 @@ Node ** Database::searchNodeByID(int idToSearch)
 
 Database::resultOfMST Database::calculateMST()
 {
+    /*
     clock_t beginTimestamp = clock();
     Node ** theSet = new Node*[this->sizeOfDatabase];
     int currentSetPosition = 0;
@@ -159,7 +162,24 @@ Database::resultOfMST Database::calculateMST()
     theDatabase[firstNonNullPosition]
 
     MinHeap connectedNodes()
+*/
+}
 
+int Database::commonNeighbours(int idOfNode1, int idOfNode2)
+{
+    Node* node1;
+    Node* node2;
+    Node** temp;
+    temp = this->searchNodeByID(idOfNode1);
+    if (temp!=nullptr)
+        node1 = *temp;
+    else
+        return 0;
+    temp = this->searchNodeByID(idOfNode2);
+    if (temp!=nullptr)
+        node2 = *temp;
+    else return 0;
+    return commonNeighbours(node1, node2);
 }
 
 int Database::commonNeighbours(Node* node1, Node* node2)
@@ -170,13 +190,14 @@ int Database::commonNeighbours(Node* node1, Node* node2)
 
 int Database::shortestPath_Dijkstra(int idOfStartingNode)
 {
+    /*
     simpleHashTable *previous = new simpleHashTable(2*sizeOfDatabase);
     simpleHashTable *distance = new simpleHashTable(2*sizeOfDatabase, INT_MAX);
 
     int* mySet = new int[sizeOfDatabase];
     MinHeap* myQ = new MinHeap(sizeOfDatabase);
 
-
+*/
 
 
 }

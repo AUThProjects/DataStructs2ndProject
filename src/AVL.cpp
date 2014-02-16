@@ -1,5 +1,6 @@
 #include "../include/AVL.h"
 #include "../include/treeNode.h"
+#include "../include/simpleHashTable.h"
 #include <iostream>
 #include <cmath>
 
@@ -290,19 +291,25 @@ treeNode* AVL::fixTree(treeNode* node)
     return node;
 }
 
-
-treeNode* AVL::getInOrder(treeNode* root)
+void AVL::getInOrderRecursive(treeNode* root, treeNode* inOrderArray[], int* counter)
 {
-    static treeNode* inOrderArray[this->numberOfLeaves];
-    static int counter = 0;
-    if (root==null)
-        return inOrderArray;
+    if (root==nullptr)
+        return;
     else
     {
-        getInOrder(root->left);
-        inOrderArray[counter++] = root;
-        getInOrder(root->right);
+        getInOrderRecursive(root->getLeft(), inOrderArray, counter);
+        inOrderArray[*(counter)++] = root;
+        getInOrderRecursive(root->getRight(), inOrderArray, counter);
     }
+}
+
+treeNode** AVL::getInOrder(treeNode* root) //
+{
+    treeNode* inOrderArray[this->numberOfLeaves];
+    int counter = 0;
+    getInOrderRecursive(this->head, inOrderArray, &counter);
+
+    return inOrderArray;
 }
 
 treeNode* AVL::getHead()
@@ -326,8 +333,8 @@ AVL::resultOfIntesection AVL::intersectWithAVL(AVL* avlForIntersection)
 
     }
     simpleHashTable *sht = new simpleHashTable(2*max_size);
-    treeNode* arrayOfInorder[max_size];
-    arrayOfInorder = biggestAVL->getInOrder(biggestAVL->root);
+    treeNode** arrayOfInorder;
+    arrayOfInorder = biggestAVL->getInOrder(biggestAVL->head);
 
 
     for (int i=0;i<max_size;i++)
@@ -335,18 +342,18 @@ AVL::resultOfIntesection AVL::intersectWithAVL(AVL* avlForIntersection)
         sht->addElement(arrayOfInorder[i]->getValue());
     }
 
-    arrayOfInorder = smallestAVL->getInOrder(smallestAVL->root);
+    arrayOfInorder = smallestAVL->getInOrder(smallestAVL->head);
 
     int * arrayOfCommonNeighbours = new int[INITIAL_SIZE_OF_CN];
     int counter = 0;
     int maxSizeOfCN = INITIAL_SIZE_OF_CN;
     for (int i=0;i<min_size;i++)
     {
-        if (counter>maxSizeOfCN)
+        if (counter>=maxSizeOfCN)
         {
             reallocateArray(&arrayOfCommonNeighbours, &maxSizeOfCN);
         }
-        if (sht->exists(arrayOfInorder[i]->getValue())
+        if (sht->exists(arrayOfInorder[i]->getValue()))
         {
             arrayOfCommonNeighbours[counter++] = arrayOfInorder[i]->getValue();
         }
@@ -360,8 +367,8 @@ AVL::resultOfIntesection AVL::intersectWithAVL(AVL* avlForIntersection)
 
 void AVL::reallocateArray(int **theArray, int* currentSize)
 {
-    int *newArray = new int[currentSize*2];
-    for(int i=0;i<currentSize;i++)
+    int *newArray = new int[*currentSize*2];
+    for(int i=0;i<*currentSize;i++)
     {
         newArray[i] = *theArray[i];
     }
