@@ -1,4 +1,5 @@
 #include "../include/Database.h"
+#include "../include/MinHeap.h"
 #include <cmath>
 #include <ctime>
 #include <climits>
@@ -191,13 +192,28 @@ int Database::commonNeighbours(Node* node1, Node* node2)
 int Database::shortestPath_Dijkstra(int idOfStartingNode)
 {
     /*
-    simpleHashTable *previous = new simpleHashTable(2*sizeOfDatabase);
-    simpleHashTable *distance = new simpleHashTable(2*sizeOfDatabase, INT_MAX);
+     * Correspondence between complexHashEntry and dijkstra variables.
+     *  id->id
+     *  weight->distance
+     *  position->previous
+     */
+    ComplexHashTable *previousAndDistanceHash = new ComplexHashTable(2*this->sizeOfDatabase);
+    // populate the previous and distance hash
+    for (int i=0;i<sizeOfDatabase;i++)
+    {
+        if (theDatabase[i]!=nullptr)
+        {
+            Node* elementFromDatabase = theDatabase[i];
+            ComplexHashTable::complexHashEntry* tempEntry = new ComplexHashTable::complexHashEntry;
+            tempEntry->id = elementFromDatabase->getID();
+            tempEntry->weight = INT_MAX;
+            tempEntry->position = -INT_MAX; // signifies null
+            previousAndDistanceHash->addElement(tempEntry);
+        }
+    }
 
     int* mySet = new int[sizeOfDatabase];
     MinHeap* myQ = new MinHeap(sizeOfDatabase);
-
-*/
 
 
 }

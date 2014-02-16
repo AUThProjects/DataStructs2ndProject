@@ -23,16 +23,6 @@ MinHeap::MinHeap(int size)
 
 MinHeap::MinHeap(AVL *anAVL ,int size): MinHeap(size)
 {
-    if(theMinHeap!=nullptr)
-    {
-        delete[] (theMinHeap);
-        theMinHeap = nullptr;
-    }
-    if(theIndex!=nullptr)
-    {
-        delete[] (theIndex);
-        theIndex = nullptr;
-    }
     treeNode** inOrderArray = anAVL->getInOrder(anAVL->getHead());
     minHeapEntry** initialMinHeapArray = new minHeapEntry*[size];
     for(int i=0; i<size; i++)
@@ -58,6 +48,36 @@ MinHeap::~MinHeap()
     // Has to delete each struct.
 
 }
+
+// adds only the element that are non-existent
+bool MinHeap::addElement(treeNode* treeNodeToInsert)
+{
+    if (this->theIndex->exists(treeNodeToInsert->getValue()))
+    {
+        return false;
+    }
+    else if (this->currentSize = this->maxSize)
+        throw -2; // full heap
+    else
+    {
+        // create the struct entries
+        minHeapEntry* toBeAddedInHeap = new minHeapEntry;
+        toBeAddedInHeap->id = treeNodeToInsert->getValue();
+        toBeAddedInHeap->weight = treeNodeToInsert->getWeight();
+        ComplexHashTable::complexHashEntry* toBeAddedInIndex = new ComplexHashTable::complexHashEntry;
+        toBeAddedInIndex->id = treeNodeToInsert->getValue();
+        toBeAddedInIndex->weight = treeNodeToInsert->getWeight();
+        toBeAddedInIndex->position = this->currentSize;
+
+        theIndex->addElement(toBeAddedInIndex);
+
+        this->theMinHeap[currentSize] = toBeAddedInHeap;
+        this->checkUpper(currentSize);
+        currentSize++;
+        return true;
+    }
+}
+
 
 int MinHeap::getMin()
 {
@@ -223,5 +243,32 @@ bool MinHeap::makeHeap()
         theMinHeap[child/2] = root;
         ComplexHashTable::complexHashEntry* element = theIndex->getElement(theMinHeap[child/2]->id);
         element->position = i;
+    }
+}
+
+void MinHeap::visitNewNode(AVL* theAvl, ComplexHashTable* previousAndDistanceHash)
+{
+    treeNode** inorderOfAvl = theAvl->getInOrder(theAvl->getHead());
+    for (int i=0;i<theAvl->getNumberOfLeaves();i++)
+    {
+        if (!theIndex->exists(inorderOfAvl[i]->getValue()))
+        {
+            try
+            {
+                if (!this->addElement(inorderOfAvl[i]))
+                {
+                    if (theIndex->getElement(inorderOfAvl[i]->getValue())->weight
+                        + previousAndDistanceHash->getElement(inorderOfAvl[i]->getValue())->position)
+                        {
+
+                        }
+                }
+            }
+            catch(int number)
+            {
+                if (number == -2)
+                    cerr << "Full minHeap" << endl;
+            }
+        }
     }
 }

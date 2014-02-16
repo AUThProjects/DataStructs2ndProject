@@ -142,8 +142,9 @@
 
 1391702484 c:\users\stefanos\documents\github\datastructs2ndproject\include\treenode.h
 
-1392570968 c:\users\stefanos\documents\github\datastructs2ndproject\include\database.h
+1392577902 c:\users\stefanos\documents\github\datastructs2ndproject\include\database.h
 	"Node.h"
+	"ComplexHashTable.h"
 
 1392132024 c:\users\stefanos\documents\github\datastructs2ndproject\include\node.h
 	"../include/AVL.h"
@@ -163,8 +164,9 @@
 
 1392570141 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\complexhashtable.cpp
 
-1392570936 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\database.cpp
+1392577978 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\database.cpp
 	"../include/Database.h"
+	"../include/MinHeap.h"
 	<cmath>
 	<ctime>
 	<climits>
@@ -188,4 +190,10 @@
 	"../include/treeNode.h"
 	<cmath>
 	<iostream>
+
+1392570086 c:\users\stefanos\documents\github\datastructs2ndproject\include\complexhashtable.h
+
+1392578029 c:\users\stefanos\documents\github\datastructs2ndproject\include\minheap.h
+	"ComplexHashTable.h"
+	"AVL.h"
 

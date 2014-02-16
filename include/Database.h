@@ -1,6 +1,7 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 #include "Node.h"
+#include "ComplexHashTable.h"
 
 class Database
 {

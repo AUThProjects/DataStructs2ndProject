@@ -17,7 +17,8 @@ class MinHeap
         MinHeap(AVL *anAVL ,int size);
         virtual ~MinHeap();
 
-        bool insert(minHeapEntry key);
+        bool addElement(treeNode* treeNodeToInsert);
+        void visitNewNode(AVL* theAvl, ComplexHashTable* previousAndDistanceHash);
         int getMin(); // simply get the Node with the min cost
         minHeapEntry popMin(); // get and delete from the heap the Node with the min cost
         void editById(int id, int value);
