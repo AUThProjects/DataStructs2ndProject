@@ -140,6 +140,54 @@ Node ** Database::searchNodeByID(int idToSearch)
 
 Database::resultOfMST Database::calculateMST()
 {
+    // Works only with connected graphs
+
+    int idOfStartingNode = -1;
+    AVL* avlOfStartingNode;
+
+    /*
+        Correspondence:
+        id = id;
+        position = previous;
+        weight = key;
+    */
+    ComplexHashTable *previousAndDistanceHash = new ComplexHashTable(2*this->sizeOfDatabase);
+    for(int i=0; i<this->sizeOfDatabase; i++)
+    {
+        if (theDatabase[i]!=nullptr)
+        {
+            if(idOfStartingNode==-1)
+            {
+                idOfStartingNode = theDatabase[i]->getID();
+                avlOfStartingNode = theDatabase[i]->getAVLTree();
+            }
+            Node* elementFromDatabase = theDatabase[i];
+            ComplexHashTable::complexHashEntry* tempEntry = new ComplexHashTable::complexHashEntry;
+            tempEntry->id = elementFromDatabase->getID();
+            tempEntry->weight = INT_MAX;
+            tempEntry->position = -INT_MAX; // signifies null
+            previousAndDistanceHash->addElement(tempEntry);
+        }
+    }
+    MinHeap* Q = new MinHeap(avlOfStartingNode ,this->sizeOfDatabase);
+
+    previousAndDistanceHash->getElement(idOfStartingNode)->position = -INT_MAX;
+    previousAndDistanceHash->getElement(idOfStartingNode)->weight = 0;
+
+    while(!Q->isEmpty())
+    {
+        MinHeap::minHeapEntry U = Q->popMin();
+        AVL* neighboursAVL = this->searchNodeByID(U.id).getAVLTree();
+        treeNode** inOrderAVL = neighboursAVL->getInOrder(neighboursAVL->getHead());
+        for(int i=0; i<neighboursAVL->getNumberOfLeaves(); i++)
+        {
+
+            Q->addElement(inOrderAVL[i]);
+
+        }
+
+    }
+
     /*
     clock_t beginTimestamp = clock();
     Node ** theSet = new Node*[this->sizeOfDatabase];
@@ -189,7 +237,7 @@ int Database::commonNeighbours(Node* node1, Node* node2)
     return res.sizeOfArray;
 }
 
-int Database::shortestPath_Dijkstra(int idOfStartingNode)
+int* Database::shortestPath_Dijkstra(int idOfStartingNode)
 {
     /*
      * Correspondence between complexHashEntry and dijkstra variables.
@@ -215,43 +263,64 @@ int Database::shortestPath_Dijkstra(int idOfStartingNode)
     previousAndDistanceHash->getElement(idOfStartingNode)->weight = 0;
     int counter = 0;
     int* mySet = new int[sizeOfDatabase];
-    AVL* avlToAdd = this->searchNodeByID(idOfStartingNode)->getAVLTree();
-    MinHeap* myQ = new MinHeap(avlToAdd, avlToAdd->getNumberOfLeaves());
+    AVL* avlToAdd = (*(this->searchNodeByID(idOfStartingNode)))->getAVLTree();
+    MinHeap* myQ = new MinHeap(avlToAdd, this->sizeOfDatabase);
 
 
     int idOfCurrentNode = idOfStartingNode;
     mySet[counter++] = idOfCurrentNode;
-
-    MinHeap::minHeapEntry min = myQ->popMin();
-    previousAndDistanceHash->getElement(min->id)->position = idOfCurrentNode;
-    avlToAdd = this->searchNodeByID(min->id)->getAVLTree();
-    treeNode* inOrderOfAVL = avlToAdd->getInOrder(avlToAdd->getHead());
-    for(int i=0; i<avlToAdd->getNumberOfLeaves(); i++)
+    while(!(myQ->isEmpty()))
     {
-        if(inOrderOfAVL[i]->getValue() != idOfStartingNode)
+        MinHeap::minHeapEntry min = myQ->popMin();
+        int idOfCurrentNode = min.id;
+        mySet[counter++] = idOfCurrentNode;
+        previousAndDistanceHash->getElement(min.id)->position = idOfCurrentNode;
+        avlToAdd = (*(this->searchNodeByID(min.id)))->getAVLTree();
+        treeNode** inOrderOfAVL = avlToAdd->getInOrder(avlToAdd->getHead());
+        for(int i=0; i<avlToAdd->getNumberOfLeaves(); i++)
         {
-            bool flag = false;
-            for(int j = 0; j<counter; j++)
+            if(inOrderOfAVL[i]->getValue() != idOfStartingNode)
             {
-                if(mySet[j]==inOrderOfAVL[i]->getValue())
+                bool flag = false;
+                for(int j = 0; j<counter; j++)
                 {
-                    flag = true;
-                    break;
-                }
-            }
-            if(!flag)
-            {
-                if(!myQ->addElement(inOrderOfAVL[i]))
-                {
-                    if(inOrderOfAVL[i]->getWeight() + previousAndDistanceHash->getElement(previousAndDistanceHash->getElement(min->id)->position)->id)->weight
-                       < previousAndDistanceHash->getElement(inOrderOfAVL[i]->getValue())->weight)
+                    if(mySet[j]==inOrderOfAVL[i]->getValue())
                     {
+                        flag = true;
+                        break;
+                    }
+                }
+                if(!flag)
+                {
+                    if(!myQ->addElement(inOrderOfAVL[i]))
+                    {
+                        int idOfCheckingNeighbour = inOrderOfAVL[i]->getValue();
+                        int weightOfCheckingNeighbour = inOrderOfAVL[i]->getWeight();
+                        int currentMinWeightOfCheckingNeighbour = previousAndDistanceHash->getElement(idOfCheckingNeighbour)->weight;
+                        int previousOfCheckingNeighbour = previousAndDistanceHash->getElement(idOfCheckingNeighbour)->position;
+                        if(weightOfCheckingNeighbour + min.weight < currentMinWeightOfCheckingNeighbour)
+                        {
+                            // Change weight
 
-                        // CHANGE DISTANCE HERE
+                            previousAndDistanceHash->getElement(idOfCheckingNeighbour)->weight =
+                                weightOfCheckingNeighbour + min.weight;
+                            myQ->editById(idOfCheckingNeighbour, weightOfCheckingNeighbour + min.weight);
+
+                            // Change previous
+                            previousAndDistanceHash->getElement(idOfCheckingNeighbour)->position = min.id;
+                        }
                     }
                 }
             }
         }
     }
+
+    /* TODO
+    int* toBeReturned = new int[sizeOfDatabase];
+    for(int i=0; i < previousAndDistanceHash->getCurrentSize(); i++)
+    {
+        toBeReturned[i] = previousAndDistanceHash
+    }
+    */
 }
 

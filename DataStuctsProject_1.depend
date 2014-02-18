@@ -197,3 +197,40 @@
 	"ComplexHashTable.h"
 	"AVL.h"
 
+1392557318 source:c:\users\anthony\documents\datastructures\datastructs2ndproject\main.cpp
+	<iostream>
+	"include/AVL.h"
+	<cstdlib>
+	"include/Database.h"
+	"include/IO.h"
+
+1392579981 c:\users\anthony\documents\datastructures\datastructs2ndproject\include\avl.h
+	<iostream>
+	"../include/treeNode.h"
+
+1392557318 c:\users\anthony\documents\datastructures\datastructs2ndproject\include\treenode.h
+
+1392579981 c:\users\anthony\documents\datastructures\datastructs2ndproject\include\database.h
+	"Node.h"
+	"ComplexHashTable.h"
+
+1392557318 c:\users\anthony\documents\datastructures\datastructs2ndproject\include\node.h
+	"../include/AVL.h"
+
+1392579981 c:\users\anthony\documents\datastructures\datastructs2ndproject\include\complexhashtable.h
+
+1392557318 c:\users\anthony\documents\datastructures\datastructs2ndproject\include\io.h
+	"Database.h"
+
+1392579981 source:c:\users\anthony\documents\datastructures\datastructs2ndproject\src\avl.cpp
+	"../include/AVL.h"
+	"../include/treeNode.h"
+	"../include/simpleHashTable.h"
+	<iostream>
+	<cmath>
+
+1392560227 c:\users\anthony\documents\datastructures\datastructs2ndproject\include\simplehashtable.h
+	"treeNode.h"
+
+1392579981 source:c:\users\anthony\documents\datastructures\datastructs2ndproject\src\complexhashtable.cpp
+

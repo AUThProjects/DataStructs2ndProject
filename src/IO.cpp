@@ -65,7 +65,7 @@ bool IO::readCommands(char *filename, Database *myDB)
             }
             else if (strcmp("SP", currentCommand.commandName)==0) // delete existing link
             {
-                //Shortest path
+                // myDB->shortestPath_Dijkstra(atoi(currentCommand.argv[0]));
             }
             else // command not recognized
             {
