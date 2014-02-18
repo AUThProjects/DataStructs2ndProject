@@ -19,6 +19,7 @@ class ComplexHashTable
         complexHashEntry* getElement(int value);
         bool addElement(complexHashEntry* value);
         bool exists(int toCompare);
+        complexHashEntry* getFirstSpecificOccurence(int valueToSearch);
     protected:
     private:
         int hashFunction(int value);

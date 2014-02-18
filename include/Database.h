@@ -20,7 +20,6 @@ class Database
         //ctor and dtor
         struct resultOfMST
         {
-            Node **MST;
             int totalCost;
             double timeElapsedInSec;
         };
@@ -41,7 +40,7 @@ class Database
         resultOfMST calculateMST();
         int commonNeighbours(int idOfNode1, int idOfNode2);
 
-        int shortestPath_Dijkstra(int idOfStartingNode);
+        int* shortestPath_Dijkstra(int idOfStartingNode);
 
     protected:
     private:

@@ -140,8 +140,10 @@ Node ** Database::searchNodeByID(int idToSearch)
 
 Database::resultOfMST Database::calculateMST()
 {
-    // Works only with connected graphs
+    // Works only with connected graphs NOT
 
+    clock_t beginTimestamp;
+    time(&beginTimestamp); // get starting timestamp
     int idOfStartingNode = -1;
     AVL* avlOfStartingNode;
 
@@ -156,11 +158,6 @@ Database::resultOfMST Database::calculateMST()
     {
         if (theDatabase[i]!=nullptr)
         {
-            if(idOfStartingNode==-1)
-            {
-                idOfStartingNode = theDatabase[i]->getID();
-                avlOfStartingNode = theDatabase[i]->getAVLTree();
-            }
             Node* elementFromDatabase = theDatabase[i];
             ComplexHashTable::complexHashEntry* tempEntry = new ComplexHashTable::complexHashEntry;
             tempEntry->id = elementFromDatabase->getID();
@@ -169,25 +166,53 @@ Database::resultOfMST Database::calculateMST()
             previousAndDistanceHash->addElement(tempEntry);
         }
     }
-    MinHeap* Q = new MinHeap(avlOfStartingNode ,this->sizeOfDatabase);
 
-    previousAndDistanceHash->getElement(idOfStartingNode)->position = -INT_MAX;
-    previousAndDistanceHash->getElement(idOfStartingNode)->weight = 0;
 
-    while(!Q->isEmpty())
+    ComplexHashTable::complexHashEntry* nextToVisit = previousAndDistanceHash->getFirstSpecificOccurence(INT_MAX);
+
+    bool flag = false;
+    // get the next unvisited node if any
+    while (nextToVisit != nullptr)
     {
-        MinHeap::minHeapEntry U = Q->popMin();
-        AVL* neighboursAVL = this->searchNodeByID(U.id).getAVLTree();
-        treeNode** inOrderAVL = neighboursAVL->getInOrder(neighboursAVL->getHead());
-        for(int i=0; i<neighboursAVL->getNumberOfLeaves(); i++)
+        MinHeap* Q = nullptr;
+        // initialize the first AVL (for ctor of minHeap)
+        if (!flag)
         {
-
-            Q->addElement(inOrderAVL[i]);
-
+            AVL* avlOfStartingNode = this->searchNodeByID(nextToVisit->id)->getAVLTree();
+            Q = new MinHeap(avlOfStartingNode ,this->sizeOfDatabase);
+            flag = true;
         }
 
+        // initialize default value for starting point of MST
+        nextToVisit->position = -INT_MAX;
+        nextToVisit->weight = 0;
+
+        // do the MST
+        while(!Q->isEmpty())
+        {
+            MinHeap::minHeapEntry U = Q->popMin();
+            AVL* neighboursAVL = (*this->searchNodeByID(U.id))->getAVLTree();
+            treeNode** inOrderAVL = neighboursAVL->getInOrder(neighboursAVL->getHead());
+            for(int i=0; i<neighboursAVL->getNumberOfLeaves(); i++)
+            {
+
+                if (!Q->addElement(inOrderAVL[i]) && inOrderAVL[i]->getWeight() < previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->weight)
+                {
+                    previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->position = U;
+                    previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->weight =  inOrderAVL[i]->getWeight();
+                }
+            }
+        }
+        nextToVisit = previousAndDistanceHash->getFirstSpecificOccurence(INT_MAX);
     }
 
+    time_t endingTimestamp;
+    time(&endingTimestamp); // get ending timestamp
+    resultOfMST toBeReturned;
+    toBeReturned.timeElapsedInSec = difftime(endingTimestamp, beginTimestamp);
+    toBeReturned.totalCost = previousAndDistanceHash->sumOfValues();
+
+    return toBeReturned;
     /*
     clock_t beginTimestamp = clock();
     Node ** theSet = new Node*[this->sizeOfDatabase];

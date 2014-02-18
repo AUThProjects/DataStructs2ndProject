@@ -91,3 +91,27 @@ int ComplexHashTable::hashFunction(int value)
 {
     return (value%A_BIG_PRIME_NUMBER)%capacity;
 }
+
+ComplexHashTable::complexHashEntry* ComplexHashTable::getFirstSpecificOccurence(int valueToSearch)
+{
+    for (int i=0;i<this->capacity;i++)
+    {
+        if (this->theArray[i]!= nullptr && this->theArray[i]->weight == valueToSearch)
+        {
+            return this->theArray[i];
+        }
+    }
+    return nullptr;
+}
+
+int ComplexHashTable::sumOfValues()
+{
+    int sum = 0;
+    for (int i = 0;i<this->capacity, i++)
+    {
+        if (theArray[i] != nullptr)
+            sum += this->theArray[i]->weight;
+    }
+
+    return sum;
+}
