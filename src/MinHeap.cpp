@@ -49,6 +49,10 @@ MinHeap::~MinHeap()
 
 }
 
+bool MinHeap::isEmpty()
+{
+    return (this->currentSize == 0);
+}
 // adds only the element that are non-existent
 bool MinHeap::addElement(treeNode* treeNodeToInsert)
 {
@@ -79,7 +83,7 @@ bool MinHeap::addElement(treeNode* treeNodeToInsert)
 }
 
 
-int MinHeap::getMin()
+MinHeap::minHeapEntry MinHeap::getMin()
 {
     if(currentSize==0)
         throw -2; //Out of bounds..
@@ -109,10 +113,11 @@ MinHeap::minHeapEntry MinHeap::popMin()
 
 void MinHeap::editById(int id, int value)
 {
-    // get the element from the index with the id provided
+    // get the element from the index with the id provide
     ComplexHashTable::complexHashEntry* elementToChange = theIndex->getElement(id);
     int positionToCheck = elementToChange->position;
 
+    // change inside the index
     elementToChange->weight = value;
 
     // change inside the minHeap;

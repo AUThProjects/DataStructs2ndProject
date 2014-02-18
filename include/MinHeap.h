@@ -22,7 +22,7 @@ class MinHeap
         int getMin(); // simply get the Node with the min cost
         minHeapEntry popMin(); // get and delete from the heap the Node with the min cost
         void editById(int id, int value);
-
+        bool isEmpty();
     protected:
         minHeapEntry **theMinHeap;
         ComplexHashTable* theIndex;
