@@ -100,8 +100,8 @@ MinHeap::minHeapEntry MinHeap::popMin()
 
     int posOfCheckingNode = 0;
     theMinHeap[0] = lastElementInHeap; //put the last element in the position of the root
-    theIndex->getElement(theMinHeap[0]->id)->position = 0; //changes the last element's position in the index
-
+    delete theIndex->getElement(theMinHeap[0]->id);//changes the last element's position in the index
+    theIndex->getElement(theMinHeap[0]);
     checkLower(posOfCheckingNode);
 
     return toBeReturned;
@@ -246,29 +246,28 @@ bool MinHeap::makeHeap()
     }
 }
 
-void MinHeap::visitNewNode(AVL* theAvl, ComplexHashTable* previousAndDistanceHash)
+void MinHeap::visitNewNode(int startingID, AVL* theAvl, ComplexHashTable* previousAndDistanceHash)
 {
     treeNode** inorderOfAvl = theAvl->getInOrder(theAvl->getHead());
     for (int i=0;i<theAvl->getNumberOfLeaves();i++)
     {
-        if (!theIndex->exists(inorderOfAvl[i]->getValue()))
+        try
         {
-            try
+            if (!this->addElement(inorderOfAvl[i]))
             {
-                if (!this->addElement(inorderOfAvl[i]))
+                int idToCheck = inorderOfAvl[i]->getValue();
+                int idOfPrevious = previousAndDistanceHash->getElement(idToCheck)->position;
+                if (inorderOfAvl[i]->getWeight()
+                    + theIndex->getElement(idOfPrevious)->weight < previousAndDistanceHash->getElement(idToCheck)->weight)
                 {
-                    if (theIndex->getElement(inorderOfAvl[i]->getValue())->weight
-                        + previousAndDistanceHash->getElement(inorderOfAvl[i]->getValue())->position)
-                        {
 
-                        }
                 }
             }
-            catch(int number)
-            {
-                if (number == -2)
-                    cerr << "Full minHeap" << endl;
-            }
+        }
+        catch(int number)
+        {
+            if (number == -2)
+                cerr << "Full minHeap" << endl;
         }
     }
 }

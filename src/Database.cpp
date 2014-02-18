@@ -211,10 +211,47 @@ int Database::shortestPath_Dijkstra(int idOfStartingNode)
             previousAndDistanceHash->addElement(tempEntry);
         }
     }
-
+    previousAndDistanceHash->getElement(idOfStartingNode)->position = 0;
+    previousAndDistanceHash->getElement(idOfStartingNode)->weight = 0;
+    int counter = 0;
     int* mySet = new int[sizeOfDatabase];
-    MinHeap* myQ = new MinHeap(sizeOfDatabase);
+    AVL* avlToAdd = this->searchNodeByID(idOfStartingNode)->getAVLTree();
+    MinHeap* myQ = new MinHeap(avlToAdd, avlToAdd->getNumberOfLeaves());
 
 
+    int idOfCurrentNode = idOfStartingNode;
+    mySet[counter++] = idOfCurrentNode;
+
+    MinHeap::minHeapEntry min = myQ->popMin();
+    previousAndDistanceHash->getElement(min->id)->position = idOfCurrentNode;
+    avlToAdd = this->searchNodeByID(min->id)->getAVLTree();
+    treeNode* inOrderOfAVL = avlToAdd->getInOrder(avlToAdd->getHead());
+    for(int i=0; i<avlToAdd->getNumberOfLeaves(); i++)
+    {
+        if(inOrderOfAVL[i]->getValue() != idOfStartingNode)
+        {
+            bool flag = false;
+            for(int j = 0; j<counter; j++)
+            {
+                if(mySet[j]==inOrderOfAVL[i]->getValue())
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag)
+            {
+                if(!myQ->addElement(inOrderOfAVL[i]))
+                {
+                    if(inOrderOfAVL[i]->getWeight() + previousAndDistanceHash->getElement(previousAndDistanceHash->getElement(min->id)->position)->id)->weight
+                       < previousAndDistanceHash->getElement(inOrderOfAVL[i]->getValue())->weight)
+                    {
+
+                        // CHANGE DISTANCE HERE
+                    }
+                }
+            }
+        }
+    }
 }
 
