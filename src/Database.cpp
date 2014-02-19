@@ -267,9 +267,7 @@ ComplexHashTable* Database::shortestPath_Dijkstra(int idOfStartingNode)
 
 
     AVL* avlToAdd = (*(this->searchNodeByID(idOfStartingNode)))->getAVLTree();
-    cout<<*avlToAdd;
     MinHeap* myQ = new MinHeap(avlToAdd, this->sizeOfDatabase);
-    cout<< "Hi";
 
 
     int idOfCurrentNode = idOfStartingNode;
@@ -298,11 +296,15 @@ ComplexHashTable* Database::shortestPath_Dijkstra(int idOfStartingNode)
                 }
                 if(!flag)
                 {
+
                     if(!myQ->addElement(inOrderOfAVL[i]))
                     {
+
                         int idOfCheckingNeighbour = inOrderOfAVL[i]->getValue();
                         int weightOfCheckingNeighbour = inOrderOfAVL[i]->getWeight();
+                        previousAndDistanceHash->print();
                         int currentMinWeightOfCheckingNeighbour = previousAndDistanceHash->getElement(idOfCheckingNeighbour)->weight;
+
                         int previousOfCheckingNeighbour = previousAndDistanceHash->getElement(idOfCheckingNeighbour)->position;
                         if(weightOfCheckingNeighbour + min.weight < currentMinWeightOfCheckingNeighbour)
                         {

@@ -96,7 +96,7 @@ int main()
     myDB->insertNewLink(6,8,2);
     myDB->insertNewLink(6,7,1);
     myDB->insertNewLink(7,8,1);
-
+    cout << *myDB << endl;
     ComplexHashTable* dijkstra = myDB->shortestPath_Dijkstra(3);
 
     dijkstra->print();
