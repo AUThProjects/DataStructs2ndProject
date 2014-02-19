@@ -247,7 +247,7 @@ ComplexHashTable* Database::shortestPath_Dijkstra(int idOfStartingNode)
      */
     ComplexHashTable *previousAndDistanceHash = new ComplexHashTable(2*this->sizeOfDatabase);
     // populate the previous and distance hash
-    for (int i=0;i<sizeOfDatabase;i++)
+    for (int i=0;i<capacity;i++)
     {
         if (theDatabase[i]!=nullptr)
         {
@@ -257,9 +257,11 @@ ComplexHashTable* Database::shortestPath_Dijkstra(int idOfStartingNode)
             tempEntry->weight = INT_MAX;
             tempEntry->position = -INT_MAX; // signifies null
             previousAndDistanceHash->addElement(tempEntry);
+           //cout << "Put id " << tempEntry->id << "with weight " << tempEntry->weight <<endl;
         }
     }
-    cout << "Reached here" << endl;
+   // cout << (*this->searchNodeByID(8))->getID();
+
     previousAndDistanceHash->getElement(idOfStartingNode)->position = 0;
     previousAndDistanceHash->getElement(idOfStartingNode)->weight = 0;
     int counter = 0;
@@ -267,18 +269,28 @@ ComplexHashTable* Database::shortestPath_Dijkstra(int idOfStartingNode)
 
 
     AVL* avlToAdd = (*(this->searchNodeByID(idOfStartingNode)))->getAVLTree();
+    treeNode** inOrderOfAVL = avlToAdd->getInOrder(avlToAdd->getHead());
+    for(int i=0; i<avlToAdd->getNumberOfLeaves(); i++)
+    {
+        previousAndDistanceHash->getElement(inOrderOfAVL[i]->getValue())->position = idOfStartingNode;
+    }
+    delete inOrderOfAVL;
+
     MinHeap* myQ = new MinHeap(avlToAdd, this->sizeOfDatabase);
-
-
+    cout << "Initial minheap"<<endl;
+    myQ->print();
+    cout << "Initial p&d hash" <<endl;
+    previousAndDistanceHash->print();
     int idOfCurrentNode = idOfStartingNode;
     mySet[counter++] = idOfCurrentNode;
     while(!(myQ->isEmpty()))
     {
         MinHeap::minHeapEntry min = myQ->popMin();
-        myQ->print();
-        int idOfCurrentNode = min.id;
+        previousAndDistanceHash->getElement(min.id)->weight = min.weight;
+
+        idOfCurrentNode = min.id;
         mySet[counter++] = idOfCurrentNode;
-        previousAndDistanceHash->getElement(min.id)->position = idOfCurrentNode;
+
         avlToAdd = (*(this->searchNodeByID(min.id)))->getAVLTree();
         treeNode** inOrderOfAVL = avlToAdd->getInOrder(avlToAdd->getHead());
         for(int i=0; i<avlToAdd->getNumberOfLeaves(); i++)
@@ -297,14 +309,15 @@ ComplexHashTable* Database::shortestPath_Dijkstra(int idOfStartingNode)
                 if(!flag)
                 {
 
-                    if(!myQ->addElement(inOrderOfAVL[i]))
+                    int idOfCheckingNeighbour = inOrderOfAVL[i]->getValue();
+                    int weightOfCheckingNeighbour = inOrderOfAVL[i]->getWeight();
+                    if(!myQ->addElement(inOrderOfAVL[i], previousAndDistanceHash->getElement(min.id)->weight))
                     {
 
-                        int idOfCheckingNeighbour = inOrderOfAVL[i]->getValue();
-                        int weightOfCheckingNeighbour = inOrderOfAVL[i]->getWeight();
                         previousAndDistanceHash->print();
-                        int currentMinWeightOfCheckingNeighbour = previousAndDistanceHash->getElement(idOfCheckingNeighbour)->weight;
 
+                        //int currentMinWeightOfCheckingNeighbour = previousAndDistanceHash->getElement(idOfCheckingNeighbour)->weight;
+                        int currentMinWeightOfCheckingNeighbour = myQ->getElement(idOfCheckingNeighbour)->weight;
                         int previousOfCheckingNeighbour = previousAndDistanceHash->getElement(idOfCheckingNeighbour)->position;
                         if(weightOfCheckingNeighbour + min.weight < currentMinWeightOfCheckingNeighbour)
                         {
@@ -318,9 +331,16 @@ ComplexHashTable* Database::shortestPath_Dijkstra(int idOfStartingNode)
                             previousAndDistanceHash->getElement(idOfCheckingNeighbour)->position = min.id;
                         }
                     }
+                    else
+                    {
+                        previousAndDistanceHash->getElement(idOfCheckingNeighbour)->position = min.id;
+                    }
                 }
             }
+
         }
+        delete inOrderOfAVL;
+        myQ->print();
     }
 
 

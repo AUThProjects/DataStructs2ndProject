@@ -20,7 +20,9 @@ class MinHeap
         virtual ~MinHeap();
 
         bool addElement(treeNode* treeNodeToInsert);
+        bool addElement(treeNode* treeNodeToInsert, int toBeIncreased);
         minHeapEntry getMin(); // get the record with min weight without deleting it.
+        MinHeap::minHeapEntry* getElement(int id);
         minHeapEntry popMin(); // get and delete the record with min weight
         bool editById(int id, int value); // edits specific item within the minHeap and index
         bool isEmpty(); // returns true if the minHeap is empty, false otherwise

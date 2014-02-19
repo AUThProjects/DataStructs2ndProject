@@ -44,7 +44,7 @@ MinHeap::MinHeap(AVL *anAVL ,int size): MinHeap(size)
     this->currentSize = anAVL->getNumberOfLeaves();
     for(int i=0; i<currentSize; i++)
     {
-        cout << i;
+        //cout << i;
         initialMinHeapArray[i] = new minHeapEntry;
         // make deep copies
         // 1. to the MinHeapArray
@@ -57,7 +57,7 @@ MinHeap::MinHeap(AVL *anAVL ,int size): MinHeap(size)
         entry->position = i;
         this->theIndex->addElement(entry);
     }
-    cout << "end";
+   // cout << "end";
     this->theMinHeap = initialMinHeapArray;
     makeHeap();
 }
@@ -84,6 +84,11 @@ bool MinHeap::isEmpty()
 // adds only the element that are non-existent
 bool MinHeap::addElement(treeNode* treeNodeToInsert)
 {
+    this->addElement(treeNodeToInsert,0);
+}
+
+bool MinHeap::addElement(treeNode* treeNodeToInsert, int toBeIncreased)
+{
     if (this->theIndex->exists(treeNodeToInsert->getValue()))
     {
         return false;
@@ -100,11 +105,11 @@ bool MinHeap::addElement(treeNode* treeNodeToInsert)
         // 1. in minheeap
         minHeapEntry* toBeAddedInHeap = new minHeapEntry;
         toBeAddedInHeap->id = treeNodeToInsert->getValue();
-        toBeAddedInHeap->weight = treeNodeToInsert->getWeight();
+        toBeAddedInHeap->weight = treeNodeToInsert->getWeight() + toBeIncreased;
         // 2. in index.
         ComplexHashTable::complexHashEntry* toBeAddedInIndex = new ComplexHashTable::complexHashEntry;
         toBeAddedInIndex->id = treeNodeToInsert->getValue();
-        toBeAddedInIndex->weight = treeNodeToInsert->getWeight();
+        toBeAddedInIndex->weight = treeNodeToInsert->getWeight() + toBeIncreased;
         toBeAddedInIndex->position = this->currentSize;
 
         theIndex->addElement(toBeAddedInIndex);
@@ -116,7 +121,6 @@ bool MinHeap::addElement(treeNode* treeNodeToInsert)
     }
     return false;
 }
-
 
 MinHeap::minHeapEntry MinHeap::getMin()
 {
@@ -148,6 +152,19 @@ MinHeap::minHeapEntry MinHeap::popMin()
     checkLower(posOfCheckingNode);
 
     return toBeReturned;
+}
+
+MinHeap::minHeapEntry* MinHeap::getElement(int id)
+{
+    // get the element from the index with the id provide
+    ComplexHashTable::complexHashEntry* searchElement = theIndex->getElement(id);
+    if(searchElement == nullptr)
+        return nullptr;
+    // if the element has been deleted and it is still on the hashtable
+    if(searchElement->position==-1)
+        return nullptr;
+
+    return theMinHeap[searchElement->position];
 }
 
 bool MinHeap::editById(int id, int value)
@@ -285,7 +302,7 @@ void MinHeap::checkLower(int posOfCheckingNode)
 
 bool MinHeap::makeHeap()
 {
-    cout << "Making heap.. current size= " << this->currentSize<<endl;
+   // cout << "Making heap.. current size= " << this->currentSize<<endl;
     for(int i = currentSize/2; i>=0; i--)
     {
         minHeapEntry* root = theMinHeap[i];
@@ -297,11 +314,11 @@ bool MinHeap::makeHeap()
             if(child<currentSize-1 && theMinHeap[child]->weight > theMinHeap[child+1]->weight)
             {
                 child++;
-                cout << "Here " <<endl;
+                //cout << "Here " <<endl;
             }
             if(root->weight < theMinHeap[child]->weight)
             {
-                cout << "Here2 " <<endl;
+              //  cout << "Here2 " <<endl;
                 break;
             }
             //Check for potential mistakes

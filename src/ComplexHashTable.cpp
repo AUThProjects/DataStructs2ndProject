@@ -21,7 +21,7 @@ void ComplexHashTable::print()
     for(int i=0; i< capacity; i++)
     {
         if(theArray[i]!=nullptr)
-            cout<< theArray[i]->id << ", " << theArray[i]->position<< endl;
+            cout<< theArray[i]->id << ",(w) " << theArray[i]->weight<< ",(p) "<< theArray[i]->position<<endl;
     }
 }
 
