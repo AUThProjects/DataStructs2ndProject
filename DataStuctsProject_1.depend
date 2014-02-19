@@ -129,7 +129,7 @@
 	<cstdlib>
 	<cstring>
 
-1392814322 source:c:\users\stefanos\documents\github\datastructs2ndproject\main.cpp
+1392847023 source:c:\users\stefanos\documents\github\datastructs2ndproject\main.cpp
 	<iostream>
 	<cstdlib>
 	<climits>
@@ -137,6 +137,7 @@
 	"include/Database.h"
 	"include/IO.h"
 	"include/SimpleHashTable.h"
+	"include/MinHeap.h"
 
 1392812723 c:\users\stefanos\documents\github\datastructs2ndproject\include\avl.h
 	<iostream>
@@ -144,7 +145,7 @@
 
 1391702484 c:\users\stefanos\documents\github\datastructs2ndproject\include\treenode.h
 
-1392751275 c:\users\stefanos\documents\github\datastructs2ndproject\include\database.h
+1392840651 c:\users\stefanos\documents\github\datastructs2ndproject\include\database.h
 	"Node.h"
 	"ComplexHashTable.h"
 
@@ -164,10 +165,10 @@
 1392813864 c:\users\stefanos\documents\github\datastructs2ndproject\include\simplehashtable.h
 	"treeNode.h"
 
-1392811301 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\complexhashtable.cpp
+1392845953 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\complexhashtable.cpp
 	<iostream>
 
-1392805476 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\database.cpp
+1392852084 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\database.cpp
 	"../include/Database.h"
 	"../include/MinHeap.h"
 	<cmath>
@@ -180,7 +181,7 @@
 	<cstdlib>
 	<cstring>
 
-1392805965 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\minheap.cpp
+1392848418 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\minheap.cpp
 
 1392571462 source:c:\users\stefanos\documents\github\datastructs2ndproject\src\node.cpp
 	"../include/Node.h"
@@ -195,9 +196,9 @@
 	<cmath>
 	<iostream>
 
-1392808609 c:\users\stefanos\documents\github\datastructs2ndproject\include\complexhashtable.h
+1392840651 c:\users\stefanos\documents\github\datastructs2ndproject\include\complexhashtable.h
 
-1392814322 c:\users\stefanos\documents\github\datastructs2ndproject\include\minheap.h
+1392845953 c:\users\stefanos\documents\github\datastructs2ndproject\include\minheap.h
 	"ComplexHashTable.h"
 	"AVL.h"
 

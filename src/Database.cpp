@@ -141,10 +141,10 @@ Node ** Database::searchNodeByID(int idToSearch)
 Database::resultOfMST Database::calculateMST()
 {
 
-    clock_t beginTimestamp;
+    time_t beginTimestamp;
     time(&beginTimestamp); // get starting timestamp
     int idOfStartingNode = -1;
-    AVL* avlOfStartingNode;
+    AVL* avlOfStartingNode = nullptr;
 
     /*
         Correspondence:
@@ -153,10 +153,11 @@ Database::resultOfMST Database::calculateMST()
         weight = key;
     */
     ComplexHashTable *previousAndDistanceHash = new ComplexHashTable(2*this->sizeOfDatabase);
-    for(int i=0; i<this->sizeOfDatabase; i++)
+    for(int i=0; i<this->capacity; i++)
     {
         if (theDatabase[i]!=nullptr)
         {
+            // initialization of previous and distance hash
             Node* elementFromDatabase = theDatabase[i];
             ComplexHashTable::complexHashEntry* tempEntry = new ComplexHashTable::complexHashEntry;
             tempEntry->id = elementFromDatabase->getID();
@@ -166,14 +167,18 @@ Database::resultOfMST Database::calculateMST()
         }
     }
 
+    previousAndDistanceHash->print();
 
+
+    // get the first record in the previousAndDistanceHash to start the MST algo
     ComplexHashTable::complexHashEntry* nextToVisit = previousAndDistanceHash->getFirstSpecificOccurence(INT_MAX);
+    cout << "starting" << nextToVisit->id << endl;
 
     bool flag = false;
+    MinHeap* Q;
     // get the next unvisited node if any
     while (nextToVisit != nullptr)
     {
-        MinHeap* Q = nullptr;
         // initialize the first AVL (for ctor of minHeap)
         if (!flag)
         {
@@ -181,28 +186,58 @@ Database::resultOfMST Database::calculateMST()
             Q = new MinHeap(avlOfStartingNode ,this->sizeOfDatabase);
             flag = true;
         }
-
+        Q->print();
         // initialize default value for starting point of MST
-        nextToVisit->position = -INT_MAX;
+        //nextToVisit->position = -INT_MAX; // unnecessary
         nextToVisit->weight = 0;
-
+        bool flag1 = false;
         // do the MST
         while(!Q->isEmpty())
         {
             MinHeap::minHeapEntry U = Q->popMin();
+            if (flag1 == false)
+            {
+                previousAndDistanceHash->getElement(U.id)->position = nextToVisit->id;
+                flag1 = true;
+            }
+            previousAndDistanceHash->getElement(U.id)->weight = U.weight;
+            Q->print();
             AVL* neighboursAVL = (*this->searchNodeByID(U.id))->getAVLTree();
             treeNode** inOrderAVL = neighboursAVL->getInOrder(neighboursAVL->getHead());
+
+
+
+            cout << "the inorder" << endl;
             for(int i=0; i<neighboursAVL->getNumberOfLeaves(); i++)
             {
+                cout << inOrderAVL[i]->getValue() << endl;
+            }
 
-                if (!Q->addElement(inOrderAVL[i]) && inOrderAVL[i]->getWeight() < previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->weight)
+            previousAndDistanceHash->print();
+
+            for(int i=0; i<neighboursAVL->getNumberOfLeaves(); i++)
+            {
+                if (previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->weight == INT_MAX)
                 {
-                    previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->position = U.id;
-                    previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->weight =  inOrderAVL[i]->getWeight();
+                    bool justAdded = Q->addElement(inOrderAVL[i]);
+                    if (!justAdded && inOrderAVL[i]->getWeight() < (Q->getElement(inOrderAVL[i]->getValue()))->weight)
+                    {
+                        Q->editById(inOrderAVL[i]->getValue(), inOrderAVL[i]->getWeight());
+                        previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->position = U.id;
+                        // do not change the weight in previousAndDistanceHash -> haven't visited it yet.
+                    }
+                    else if (justAdded)
+                    {
+                        previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->position = U.id;
+                    }
                 }
             }
+            delete inOrderAVL;
+
+
         }
         nextToVisit = previousAndDistanceHash->getFirstSpecificOccurence(INT_MAX);
+        //cout  << "Now preparing to visit"<< nextToVisit->id << endl;
     }
 
     time_t endingTimestamp;
@@ -210,7 +245,12 @@ Database::resultOfMST Database::calculateMST()
     resultOfMST toBeReturned;
     toBeReturned.timeElapsedInSec = difftime(endingTimestamp, beginTimestamp);
     toBeReturned.totalCost = previousAndDistanceHash->sumOfValues();
-
+    delete Q;
+    delete previousAndDistanceHash;
+    cout << beginTimestamp << endl;
+    cout << endingTimestamp << endl;
+    double time1 = time(0)*1000;
+    cout << time << endl;
     return toBeReturned;
 }
 

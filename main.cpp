@@ -97,9 +97,14 @@ int main()
     myDB->insertNewLink(6,7,1);
     myDB->insertNewLink(7,8,1);
     cout << *myDB << endl;
-    ComplexHashTable* dijkstra = myDB->shortestPath_Dijkstra(3);
+   // ComplexHashTable* dijkstra = myDB->shortestPath_Dijkstra(3);
 
-    dijkstra->print();
+    //dijkstra->print();
+    Database::resultOfMST res = myDB->calculateMST();
+    cout << "time" << res.timeElapsedInSec << endl;
+    cout << "cost" << res.totalCost << endl;
+
+    cout << myDB->commonNeighbours(5, 3);
 /*
     IO *myIO = new IO();
     if (!myIO->readCommands("commands.txt", myDB))

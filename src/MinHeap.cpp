@@ -132,7 +132,7 @@ MinHeap::minHeapEntry MinHeap::getMin()
 
 MinHeap::minHeapEntry MinHeap::popMin()
 {
-    cout << "Attempting to pop" << endl;
+    cout << "Attempting to pop " ;
     if(currentSize==0)
         throw -2; //Out of bounds..
 
@@ -150,7 +150,7 @@ MinHeap::minHeapEntry MinHeap::popMin()
     theIndex->getElement(lastElementInHeap->id)->position = 0;
     //cout << "ftasame ew" << endl;
     checkLower(posOfCheckingNode);
-
+    cout << toBeReturned.id << endl;
     return toBeReturned;
 }
 
