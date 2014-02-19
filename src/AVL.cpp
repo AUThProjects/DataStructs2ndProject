@@ -1,10 +1,10 @@
 #include "../include/AVL.h"
 #include "../include/treeNode.h"
-#include "../include/simpleHashTable.h"
+#include "../include/SimpleHashTable.h"
 #include <iostream>
 #include <cmath>
 
-#define INITIAL_SIZE_OF_CN 100
+#define INITIAL_SIZE_OF_CN 1
 using namespace std;
 AVL::AVL()
 {
@@ -291,21 +291,21 @@ treeNode* AVL::fixTree(treeNode* node)
     return node;
 }
 
-void AVL::getInOrderRecursive(treeNode* root, treeNode* inOrderArray[], int* counter)
+void AVL::getInOrderRecursive(treeNode* root, treeNode** inOrderArray, int* counter)
 {
     if (root==nullptr)
         return;
     else
     {
         getInOrderRecursive(root->getLeft(), inOrderArray, counter);
-        inOrderArray[*(counter)++] = root;
+        inOrderArray[(*counter)++] = root;
         getInOrderRecursive(root->getRight(), inOrderArray, counter);
     }
 }
 
-treeNode** AVL::getInOrder(treeNode* root) //
+treeNode** AVL::getInOrder(treeNode* root)
 {
-    treeNode* inOrderArray[this->numberOfLeaves];
+    treeNode** inOrderArray = new treeNode*[this->numberOfLeaves];
     int counter = 0;
     getInOrderRecursive(this->head, inOrderArray, &counter);
 
@@ -319,49 +319,66 @@ treeNode* AVL::getHead()
 
 AVL::resultOfIntesection AVL::intersectWithAVL(AVL* avlForIntersection)
 {
+    /* what it does:
+     *  1. Creates a hashTable from the biggest AVL
+     *  2. For each element of the other AVL
+     *      If it exists in the hashTable, add it to the result
+     *      if not, continue to the next Node of the AVl
+     *
+    */
+
+
     AVL* biggestAVL = this;
     int max_size = this->numberOfLeaves;
     AVL* smallestAVL = avlForIntersection;
     int min_size = avlForIntersection->numberOfLeaves;
     // take the biggest avl
-    if (max_size < min_size)
+    if (max_size < min_size) // swap if taken wrong
     {
         smallestAVL = biggestAVL;
         biggestAVL = avlForIntersection;
         min_size = max_size;
         max_size = biggestAVL->numberOfLeaves;
-
     }
-    simpleHashTable *sht = new simpleHashTable(2*max_size);
+
+    // Create Hash from the inorder of the biggest AVL
+    SimpleHashTable *sht = new SimpleHashTable(2*max_size);
     treeNode** arrayOfInorder;
     arrayOfInorder = biggestAVL->getInOrder(biggestAVL->head);
 
-
+    // put them one-by-one in the hashtable
     for (int i=0;i<max_size;i++)
     {
         sht->addElement(arrayOfInorder[i]->getValue());
     }
 
+    // Take the inorder of the smallest AVL and ask for intersections
     arrayOfInorder = smallestAVL->getInOrder(smallestAVL->head);
 
-    int * arrayOfCommonNeighbours = new int[INITIAL_SIZE_OF_CN];
+    int * arrayOfIntersectingTreeNodes = new int[INITIAL_SIZE_OF_CN];
     int counter = 0;
     int maxSizeOfCN = INITIAL_SIZE_OF_CN;
     for (int i=0;i<min_size;i++)
     {
         if (counter>=maxSizeOfCN)
         {
-            reallocateArray(&arrayOfCommonNeighbours, &maxSizeOfCN);
+            reallocateArray(&arrayOfIntersectingTreeNodes, &maxSizeOfCN);
         }
         if (sht->exists(arrayOfInorder[i]->getValue()))
         {
-            arrayOfCommonNeighbours[counter++] = arrayOfInorder[i]->getValue();
+            arrayOfIntersectingTreeNodes[counter++] = arrayOfInorder[i]->getValue();
         }
     }
 
     resultOfIntesection theResult;
-    theResult.commonNodes = arrayOfCommonNeighbours;
+    theResult.commonNodes = arrayOfIntersectingTreeNodes;
     theResult.sizeOfArray = counter;
+
+    // memory cleaning
+    delete arrayOfInorder;
+    delete sht;
+
+
     return theResult;
 }
 
@@ -370,7 +387,7 @@ void AVL::reallocateArray(int **theArray, int* currentSize)
     int *newArray = new int[*currentSize*2];
     for(int i=0;i<*currentSize;i++)
     {
-        newArray[i] = *theArray[i];
+        newArray[i] = (*theArray)[i];
     }
     delete *theArray;
     *theArray = newArray;

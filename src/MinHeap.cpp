@@ -8,28 +8,44 @@ Comments:
 
 */#include "../include/MinHeap.h"
 
+void MinHeap::print()
+{
+    for (int i=0;i<currentSize;i++)
+    {
+        cout << theMinHeap[i]->id << ", " << theMinHeap[i]->weight << endl;
+    }
+}
+
+
 
 MinHeap::MinHeap(int size)
 {
     theMinHeap = new minHeapEntry*[size];
+    theIndex = new ComplexHashTable(size*2); // initializes its contents to nullptr inside the class
+    // initilize the values of the minHeap to default value (nullptr)
     for(int i = 0 ; i< size; i++)
     {
         theMinHeap[i] = nullptr;
     }
-    theIndex = new ComplexHashTable(size*2);
-
+    this->currentSize = 0;
     this->maxSize = size;
 }
 
 MinHeap::MinHeap(AVL *anAVL ,int size): MinHeap(size)
 {
+    if (anAVL->getNumberOfLeaves()>size)
+        throw -3;
     treeNode** inOrderArray = anAVL->getInOrder(anAVL->getHead());
     minHeapEntry** initialMinHeapArray = new minHeapEntry*[size];
-    for(int i=0; i<size; i++)
+    this->currentSize = anAVL->getNumberOfLeaves();
+    for(int i=0; i<currentSize; i++)
     {
         initialMinHeapArray[i] = new minHeapEntry;
+        // make deep copies
+        // 1. to the MinHeapArray
         initialMinHeapArray[i]->id = inOrderArray[i]->getValue();
         initialMinHeapArray[i]->weight = inOrderArray[i]->getWeight();
+        // 2. to the CompexHashTable
         ComplexHashTable::complexHashEntry* entry = new ComplexHashTable::complexHashEntry;
         entry->id = inOrderArray[i]->getValue();
         entry->weight = inOrderArray[i]->getWeight();
@@ -38,7 +54,6 @@ MinHeap::MinHeap(AVL *anAVL ,int size): MinHeap(size)
     }
 
     this->theMinHeap = initialMinHeapArray;
-    this->currentSize = size;
     makeHeap();
 }
 
@@ -88,7 +103,7 @@ MinHeap::minHeapEntry MinHeap::getMin()
     if(currentSize==0)
         throw -2; //Out of bounds..
 
-    return theMinHeap[0]->weight;
+    return *theMinHeap[0];
 }
 
 MinHeap::minHeapEntry MinHeap::popMin()
@@ -105,7 +120,7 @@ MinHeap::minHeapEntry MinHeap::popMin()
     int posOfCheckingNode = 0;
     theMinHeap[0] = lastElementInHeap; //put the last element in the position of the root
     delete theIndex->getElement(theMinHeap[0]->id);//changes the last element's position in the index
-    theIndex->getElement(theMinHeap[0]);
+    theIndex->getElement(theMinHeap[0]->id);
     checkLower(posOfCheckingNode);
 
     return toBeReturned;
@@ -225,7 +240,6 @@ void MinHeap::checkLower(int posOfCheckingNode)
 
 bool MinHeap::makeHeap()
 {
-
     for(int i = currentSize/2; i>=0; i--)
     {
         minHeapEntry* root = theMinHeap[i];
@@ -234,7 +248,7 @@ bool MinHeap::makeHeap()
 
         while(child <= currentSize)
         {
-            if(child<currentSize && theMinHeap[child]->weight > theMinHeap[child+1]->weight)
+            if(child<currentSize-1 && theMinHeap[child]->weight > theMinHeap[child+1]->weight)
                 child++;
             if(root->weight < theMinHeap[child]->weight)
                 break;
@@ -250,7 +264,7 @@ bool MinHeap::makeHeap()
         element->position = i;
     }
 }
-
+/*
 void MinHeap::visitNewNode(int startingID, AVL* theAvl, ComplexHashTable* previousAndDistanceHash)
 {
     treeNode** inorderOfAvl = theAvl->getInOrder(theAvl->getHead());
@@ -276,3 +290,4 @@ void MinHeap::visitNewNode(int startingID, AVL* theAvl, ComplexHashTable* previo
         }
     }
 }
+*/

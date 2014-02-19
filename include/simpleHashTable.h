@@ -3,24 +3,26 @@
 
 #include "treeNode.h"
 
-class simpleHashTable
+class SimpleHashTable
 {
     public:
-        simpleHashTable(int sizeToInitializeTo);
-        simpleHashTable(int sizeToInitializeTo, int defaultValue);
-        virtual ~simpleHashTable();
+        SimpleHashTable(int sizeToInitializeTo); // ctor with size
+        // ctor with size and initial value that fills the HashTable
+        SimpleHashTable(int sizeToInitializeTo, int defaultValue);
+        virtual ~SimpleHashTable(); // dtor
         int getCapacity();
         int getCurrentSize();
         int getElement(int value);
         bool addElement(int value);
         bool exists(int toCompare);
-
+        void print();
     protected:
     private:
         int hashFunction(int value);
-        int* theArray; // T** for nullable
-        int capacity;
-        int currentSize;
+        int defaultFillValue; // the value to which empty fields in the HashTable correspond to
+        int* theArray; // the actual HashTable
+        int capacity; // max size of the HashTable
+        int currentSize; // current size of the HashTable (number of Records)
 };
 
 #endif // SIMPLEHASHTABLE_H

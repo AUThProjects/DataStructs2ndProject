@@ -8,47 +8,40 @@ using namespace std;
 class AVL
 {
     private:
-        //implemented with class, not struct
-        /*
-        struct treeNode
-        {
-            treeNode* leftChild;
-            treeNode* rightChild;
-            int value;
-            int height=0;
-        };
-        typedef struct treeNode treeNode;
-        */
     public:
+        // struct for showing the intersecting nodes between two AVL trees.
         struct resultOfIntesection
         {
             int* commonNodes;
             int sizeOfArray;
         };
         typedef struct resultOfIntesection resultOfIntesection;
+
         AVL(); //ctor
         virtual ~AVL(); //dtor
+
         //operator overloads
         friend ostream& operator<< (ostream& myStream, AVL& obj);
 
-        int getNumberOfLeaves(); // accessor, retuns numberOfLeaves
         // called from outside
         void insertTreeNode(int idOfConnectedNode, int weight); // inserts a new treeNode to the AVL. If existent, does nothing.
         void deleteTreeNode(int idOfConnectedNode); // deletes a treeNode from the AVL. If non existent, does nothing.
-        //bool hasConnectedNode(int idOfConnectedNode); // not implemented
         void printTree(treeNode* root, ostream& myStream); // prints inOrder
         //void print(); needed when printing without operator overload
 
+        // accessors
+        int getNumberOfLeaves();
         treeNode* getHead();
         treeNode** getInOrder(treeNode *root);
-        void  getInOrderRecursive(treeNode* root, treeNode* inOrderArray[], int* counter);
+
+
         resultOfIntesection intersectWithAVL(AVL* avlForIntersection);
     protected:
     private:
         // member variables
         treeNode* head;
         int numberOfLeaves;
-        // called from inside tha class, for recursion
+        // called from inside the class, for recursion
         treeNode* insertTreeNode(int idOfConnectedNode,int weight, treeNode* root);
         treeNode* deleteTreeNode(int idOfConnectedNode, treeNode * root);
 
@@ -64,7 +57,8 @@ class AVL
         static treeNode* rotateRL(treeNode* node); // Makes a RL rotation
         static treeNode* fixTree(treeNode* node); // called for fixing the tree, when inserting nodes
 
-        void reallocateArray(int** theArray, int* currentSize);
+        void reallocateArray(int** theArray, int* currentSize); // used to allocate more space to the array of intersecting nodes
+        void  getInOrderRecursive(treeNode* root, treeNode** inOrderArray, int* counter);
 };
 
 #endif // AVL_H

@@ -178,7 +178,7 @@ Database::resultOfMST Database::calculateMST()
         // initialize the first AVL (for ctor of minHeap)
         if (!flag)
         {
-            AVL* avlOfStartingNode = this->searchNodeByID(nextToVisit->id)->getAVLTree();
+            AVL* avlOfStartingNode = (*this->searchNodeByID(nextToVisit->id))->getAVLTree();
             Q = new MinHeap(avlOfStartingNode ,this->sizeOfDatabase);
             flag = true;
         }
@@ -198,7 +198,7 @@ Database::resultOfMST Database::calculateMST()
 
                 if (!Q->addElement(inOrderAVL[i]) && inOrderAVL[i]->getWeight() < previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->weight)
                 {
-                    previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->position = U;
+                    previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->position = U.id;
                     previousAndDistanceHash->getElement(inOrderAVL[i]->getValue())->weight =  inOrderAVL[i]->getWeight();
                 }
             }
@@ -213,30 +213,6 @@ Database::resultOfMST Database::calculateMST()
     toBeReturned.totalCost = previousAndDistanceHash->sumOfValues();
 
     return toBeReturned;
-    /*
-    clock_t beginTimestamp = clock();
-    Node ** theSet = new Node*[this->sizeOfDatabase];
-    int currentSetPosition = 0;
-    int sumOfCosts;
-    int firstNonNullPosition = -1;
-    int *idsContained = new int[this->sizeOfDatabase];
-    int currentContainedPosition = 0;
-    int *respectiveWeightsInAVL = new int[this->sizeOfDatabase];
-    for (int i=0;i<this->sizeOfDatabase;i++)
-    {
-        if (this->theDatabase[i]!=nullptr)
-        {
-            if (firstNonNullPosition == -1)
-                firstNonNullPosition = i;
-            idsContained[currentContainedPosition++] = theDatabase[i]->getID();
-        }
-        respectiveWeightsInAVL = INT_MAX; // instead of inf
-    }
-    theSet[currentSetPosition] = new Node(theDatabase[firstNonNullPosition]->getID());
-    theDatabase[firstNonNullPosition]
-
-    MinHeap connectedNodes()
-*/
 }
 
 int Database::commonNeighbours(int idOfNode1, int idOfNode2)
