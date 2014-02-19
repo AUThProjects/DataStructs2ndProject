@@ -107,7 +107,7 @@ bool Database::insertNewLink(int leftId, int rightId, int weight)
 
     }
     //cout << *theDatabase[hashFunction(leftId)] << endl;
-    cout << *this << endl;
+    //cout << *this << endl;
     return toBeReturned;
 }
 
@@ -140,7 +140,6 @@ Node ** Database::searchNodeByID(int idToSearch)
 
 Database::resultOfMST Database::calculateMST()
 {
-    // Works only with connected graphs NOT
 
     clock_t beginTimestamp;
     time(&beginTimestamp); // get starting timestamp
@@ -238,7 +237,7 @@ int Database::commonNeighbours(Node* node1, Node* node2)
     return res.sizeOfArray;
 }
 
-int* Database::shortestPath_Dijkstra(int idOfStartingNode)
+ComplexHashTable* Database::shortestPath_Dijkstra(int idOfStartingNode)
 {
     /*
      * Correspondence between complexHashEntry and dijkstra variables.
@@ -260,12 +259,17 @@ int* Database::shortestPath_Dijkstra(int idOfStartingNode)
             previousAndDistanceHash->addElement(tempEntry);
         }
     }
+    cout << "Reached here" << endl;
     previousAndDistanceHash->getElement(idOfStartingNode)->position = 0;
     previousAndDistanceHash->getElement(idOfStartingNode)->weight = 0;
     int counter = 0;
     int* mySet = new int[sizeOfDatabase];
+
+
     AVL* avlToAdd = (*(this->searchNodeByID(idOfStartingNode)))->getAVLTree();
+    cout<<*avlToAdd;
     MinHeap* myQ = new MinHeap(avlToAdd, this->sizeOfDatabase);
+    cout<< "Hi";
 
 
     int idOfCurrentNode = idOfStartingNode;
@@ -273,6 +277,7 @@ int* Database::shortestPath_Dijkstra(int idOfStartingNode)
     while(!(myQ->isEmpty()))
     {
         MinHeap::minHeapEntry min = myQ->popMin();
+        myQ->print();
         int idOfCurrentNode = min.id;
         mySet[counter++] = idOfCurrentNode;
         previousAndDistanceHash->getElement(min.id)->position = idOfCurrentNode;
@@ -316,12 +321,7 @@ int* Database::shortestPath_Dijkstra(int idOfStartingNode)
         }
     }
 
-    /* TODO
-    int* toBeReturned = new int[sizeOfDatabase];
-    for(int i=0; i < previousAndDistanceHash->getCurrentSize(); i++)
-    {
-        toBeReturned[i] = previousAndDistanceHash
-    }
-    */
+
+    return previousAndDistanceHash;
 }
 

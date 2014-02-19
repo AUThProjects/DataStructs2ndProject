@@ -5,6 +5,8 @@
 class ComplexHashTable
 {
     public:
+        void print();
+
         // Struct representing the records in the HashTable
         struct complexHashEntry
         {
@@ -27,6 +29,7 @@ class ComplexHashTable
 
 
         bool addElement(complexHashEntry* value);
+        bool deleteElement(int id);
         bool exists(int toCompare);
         // returns the first element whose weight field equals to valueToSearch
         complexHashEntry* getFirstSpecificOccurence(int valueToSearch);

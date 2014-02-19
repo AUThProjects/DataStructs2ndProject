@@ -5,19 +5,9 @@
 
 class Database
 {
-    private:
-        // this is the type of data that BinarySearch function returns
-        // we need to know if the value was found (bool found)
-        // and where (int position)
-        struct resultOfBinary
-        {
-            bool found;
-            int position;
-        };
-        typedef struct resultOfBinary resultOfBinary;
-
     public:
-        //ctor and dtor
+
+        // struct for the result of Prim's algorithm
         struct resultOfMST
         {
             int totalCost;
@@ -25,7 +15,7 @@ class Database
         };
         typedef struct resultOfMST resultOfMST;
 
-
+        //ctor and dtor
         Database();
         virtual ~Database();
 
@@ -37,10 +27,9 @@ class Database
         bool insertNewLink(int leftId, int rightId, int weight);
         bool deleteExistingLink(int leftId, int rightId);
         int hashFunction(int key); // the hashing function
-        resultOfMST calculateMST();
-        int commonNeighbours(int idOfNode1, int idOfNode2);
-
-        int* shortestPath_Dijkstra(int idOfStartingNode);
+        resultOfMST calculateMST(); // Prim's algorithm for MST (or possible forests..)
+        int commonNeighbours(int idOfNode1, int idOfNode2); // Common neighbours algorithm
+        ComplexHashTable* shortestPath_Dijkstra(int idOfStartingNode); // Shortest path - returns only the minimum costs array
 
     protected:
     private:
@@ -54,7 +43,6 @@ class Database
         int auxHashFunction1(int key);
         int auxHashFunction2(int key);
         int commonNeighbours(Node* node1, Node* node2);
-
 
 
         //search functions

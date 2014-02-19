@@ -22,7 +22,7 @@ class MinHeap
         bool addElement(treeNode* treeNodeToInsert);
         minHeapEntry getMin(); // get the record with min weight without deleting it.
         minHeapEntry popMin(); // get and delete the record with min weight
-        void editById(int id, int value); // edits specific item within the minHeap and index
+        bool editById(int id, int value); // edits specific item within the minHeap and index
         bool isEmpty(); // returns true if the minHeap is empty, false otherwise
     protected:
         minHeapEntry **theMinHeap; // the actual minHeap

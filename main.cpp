@@ -77,22 +77,29 @@ int main()
 
     cout << myAVL;
 */
-/*
+
     cout << "Program started" << endl;
     Database* myDB = new Database();
     cout<< *myDB << endl;
     cout << "Reading commands " <<endl;
    // myDB->insertNewLink(1,5, 7);
-*/
-    /*myDB->insertNewLink(1,7);
-    myDB->insertNewLink(2,1);
-    myDB->insertNewLink(1,7);
-    myDB->insertNewLink(2,6);
-    myDB->insertNewLink(3,2);
-    myDB->insertNewLink(3,3);
-    myDB->insertNewLink(15,2);
-    myDB->insertNewLink(4,1);
-    myDB->insertNewLink(-2,1);*/
+
+    myDB->insertNewLink(2,3,3);
+    myDB->insertNewLink(2,5,1);
+    myDB->insertNewLink(2,1,100);
+    myDB->insertNewLink(1,5,10);
+    myDB->insertNewLink(5,4,2);
+    myDB->insertNewLink(4,6,1);
+    myDB->insertNewLink(2,6,10);
+    myDB->insertNewLink(4,3,5);
+    myDB->insertNewLink(3,6,10);
+    myDB->insertNewLink(6,8,2);
+    myDB->insertNewLink(6,7,1);
+    myDB->insertNewLink(7,8,1);
+
+    ComplexHashTable* dijkstra = myDB->shortestPath_Dijkstra(3);
+
+    dijkstra->print();
 /*
     IO *myIO = new IO();
     if (!myIO->readCommands("commands.txt", myDB))
@@ -103,42 +110,6 @@ int main()
     cout << "Program ended successfully" << endl;
     //cout << *myDB << endl;
 */
-
-    AVL* myAVL = new AVL();
-    myAVL->insertTreeNode(12, 120);
-    myAVL->insertTreeNode(13, 12);
-    myAVL->insertTreeNode(165, 10);
-    myAVL->insertTreeNode(1, 20);
-    myAVL->insertTreeNode(32, 13);
-    myAVL->insertTreeNode(23, 15);
-    myAVL->insertTreeNode(98, 125);
-    myAVL->insertTreeNode(3, 3);
-
-    cout << *myAVL << endl;
-/*
-    AVL* myOtherAVL = new AVL();
-    myOtherAVL->insertTreeNode(1,1);
-    myOtherAVL->insertTreeNode(13,1);
-    myOtherAVL->insertTreeNode(25,1);
-    myOtherAVL->insertTreeNode(3,1);
-    myOtherAVL->insertTreeNode(99,1);
-
-    AVL::resultOfIntesection res = myAVL->intersectWithAVL(myOtherAVL);
-    for (int i=0;i<res.sizeOfArray;i++)
-    {
-        cout <<res.commonNodes[i] << ", ";
-    }
-
-    res = myOtherAVL->intersectWithAVL(myAVL);
-    for (int i=0;i<res.sizeOfArray;i++)
-    {
-        cout <<res.commonNodes[i] << ", ";
-    }
-*/
-
-MinHeap* q = new MinHeap(myAVL, 5000);
-q->print();
-
     return 0;
 }
 

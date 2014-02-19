@@ -14,6 +14,17 @@ Comments:
 
 using namespace std;
 
+/** DEBUG **/
+
+void ComplexHashTable::print()
+{
+    for(int i=0; i< capacity; i++)
+    {
+        if(theArray[i]!=nullptr)
+            cout<< theArray[i]->id << ", " << theArray[i]->position<< endl;
+    }
+}
+
 ComplexHashTable::ComplexHashTable(int sizeToInitializeTo)
 {
     this->theArray = new complexHashEntry*[sizeToInitializeTo];
@@ -40,6 +51,8 @@ void ComplexHashTable::onDestroy()
 
     this->currentSize = 0;
 }
+
+
 
 
 /************************ Accessors ******************************/
@@ -77,7 +90,7 @@ ComplexHashTable::complexHashEntry* ComplexHashTable::getFirstSpecificOccurence(
 {
     for (int i=0;i<this->capacity;i++)
     {
-        if (this->theArray[i]!= nullptr && this->theArray[i]->weight == valueToSearch)
+        if (this->theArray[i]!= nullptr && this->theArray[i]->weight == valueToSearch && this->theArray[i]->position !=-1)
         {
             return this->theArray[i];
         }
@@ -88,7 +101,7 @@ ComplexHashTable::complexHashEntry* ComplexHashTable::getFirstSpecificOccurence(
 
 bool ComplexHashTable::addElement(complexHashEntry* value)
 {
-    cout << "inside add ele";
+    //cout << "inside add ele";
     int hashingPosition = hashFunction(value->id);
     bool flag = false;
     if (this->capacity == this->currentSize)
@@ -98,9 +111,12 @@ bool ComplexHashTable::addElement(complexHashEntry* value)
     }
     while (!flag)
     {
-            cout << hashingPosition << endl;
-        if (theArray[hashingPosition]==nullptr)
+        if (theArray[hashingPosition]==nullptr || theArray[hashingPosition]->position==-1)
         {
+            if(theArray[hashingPosition]!=nullptr)
+            {
+                delete theArray[hashingPosition];
+            }
             theArray[hashingPosition] = new complexHashEntry;
             // make a deep copy.
             theArray[hashingPosition]->id = value->id;
@@ -110,10 +126,10 @@ bool ComplexHashTable::addElement(complexHashEntry* value)
             ++currentSize;
             return flag;
         }
-        else if (theArray[hashingPosition]->id == value->id)
+        else if (theArray[hashingPosition]->id == value->id )
         {
             // the id that you are trying to add already exists
-            cout << "Hello";
+            //cout << "Hello";
             flag = false;
             return flag;
         }
@@ -125,10 +141,21 @@ bool ComplexHashTable::addElement(complexHashEntry* value)
     return flag;
 }
 
+bool ComplexHashTable::deleteElement(int id)
+{
+    if(this->exists(id))
+    {
+        this->getElement(id)->position = -1;
+        this->getElement(id)->weight = 0;
+        return true;
+    }
+    return false;
+}
 
 bool ComplexHashTable::exists(int id)
 {
-    if (this->getElement(id) == nullptr)
+    complexHashEntry* entry = this->getElement(id);
+    if (entry == nullptr || entry->position == -1)
         return false;
     else
         return true;
