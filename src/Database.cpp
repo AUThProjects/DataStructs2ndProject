@@ -3,6 +3,7 @@
 #include <cmath>
 #include <ctime>
 #include <climits>
+#include <sys/time.h>
 #define INITIAL_SIZE 100000
 
 
@@ -133,7 +134,6 @@ bool Database::deleteExistingLink(int leftId, int rightId)
 Node ** Database::searchNodeByID(int idToSearch)
 {
     int res = hashFunction(idToSearch);
-    cout << "res=" << res << endl;
     return &(theDatabase[res]);
 }
 
@@ -167,12 +167,8 @@ Database::resultOfMST Database::calculateMST()
         }
     }
 
-    previousAndDistanceHash->print();
-
-
     // get the first record in the previousAndDistanceHash to start the MST algo
     ComplexHashTable::complexHashEntry* nextToVisit = previousAndDistanceHash->getFirstSpecificOccurence(INT_MAX);
-    cout << "starting" << nextToVisit->id << endl;
 
     bool flag = false;
     MinHeap* Q;
@@ -186,7 +182,15 @@ Database::resultOfMST Database::calculateMST()
             Q = new MinHeap(avlOfStartingNode ,this->sizeOfDatabase);
             flag = true;
         }
-        Q->print();
+        else
+        {
+            AVL* neighboursAVL = (*this->searchNodeByID(nextToVisit->id))->getAVLTree();
+            treeNode** inOrderAVL = neighboursAVL->getInOrder(neighboursAVL->getHead());
+            for(int i=0; i< neighboursAVL->getNumberOfLeaves(); i++)
+            {
+                Q->addElement(inOrderAVL[i]);
+            }
+        }
         // initialize default value for starting point of MST
         //nextToVisit->position = -INT_MAX; // unnecessary
         nextToVisit->weight = 0;
@@ -201,19 +205,8 @@ Database::resultOfMST Database::calculateMST()
                 flag1 = true;
             }
             previousAndDistanceHash->getElement(U.id)->weight = U.weight;
-            Q->print();
             AVL* neighboursAVL = (*this->searchNodeByID(U.id))->getAVLTree();
             treeNode** inOrderAVL = neighboursAVL->getInOrder(neighboursAVL->getHead());
-
-
-
-            cout << "the inorder" << endl;
-            for(int i=0; i<neighboursAVL->getNumberOfLeaves(); i++)
-            {
-                cout << inOrderAVL[i]->getValue() << endl;
-            }
-
-            previousAndDistanceHash->print();
 
             for(int i=0; i<neighboursAVL->getNumberOfLeaves(); i++)
             {
@@ -236,21 +229,17 @@ Database::resultOfMST Database::calculateMST()
 
 
         }
-        nextToVisit = previousAndDistanceHash->getFirstSpecificOccurence(INT_MAX);
-        //cout  << "Now preparing to visit"<< nextToVisit->id << endl;
+        nextToVisit = previousAndDistanceHash->getFirstSpecificOccurence(INT_MAX);;
     }
 
     time_t endingTimestamp;
     time(&endingTimestamp); // get ending timestamp
+
     resultOfMST toBeReturned;
     toBeReturned.timeElapsedInSec = difftime(endingTimestamp, beginTimestamp);
     toBeReturned.totalCost = previousAndDistanceHash->sumOfValues();
     delete Q;
     delete previousAndDistanceHash;
-    cout << beginTimestamp << endl;
-    cout << endingTimestamp << endl;
-    double time1 = time(0)*1000;
-    cout << time << endl;
     return toBeReturned;
 }
 
@@ -297,10 +286,8 @@ ComplexHashTable* Database::shortestPath_Dijkstra(int idOfStartingNode)
             tempEntry->weight = INT_MAX;
             tempEntry->position = -INT_MAX; // signifies null
             previousAndDistanceHash->addElement(tempEntry);
-           //cout << "Put id " << tempEntry->id << "with weight " << tempEntry->weight <<endl;
         }
     }
-   // cout << (*this->searchNodeByID(8))->getID();
 
     previousAndDistanceHash->getElement(idOfStartingNode)->position = 0;
     previousAndDistanceHash->getElement(idOfStartingNode)->weight = 0;
@@ -317,10 +304,6 @@ ComplexHashTable* Database::shortestPath_Dijkstra(int idOfStartingNode)
     delete inOrderOfAVL;
 
     MinHeap* myQ = new MinHeap(avlToAdd, this->sizeOfDatabase);
-    cout << "Initial minheap"<<endl;
-    myQ->print();
-    cout << "Initial p&d hash" <<endl;
-    previousAndDistanceHash->print();
     int idOfCurrentNode = idOfStartingNode;
     mySet[counter++] = idOfCurrentNode;
     while(!(myQ->isEmpty()))
@@ -354,7 +337,6 @@ ComplexHashTable* Database::shortestPath_Dijkstra(int idOfStartingNode)
                     if(!myQ->addElement(inOrderOfAVL[i], previousAndDistanceHash->getElement(min.id)->weight))
                     {
 
-                        previousAndDistanceHash->print();
 
                         //int currentMinWeightOfCheckingNeighbour = previousAndDistanceHash->getElement(idOfCheckingNeighbour)->weight;
                         int currentMinWeightOfCheckingNeighbour = myQ->getElement(idOfCheckingNeighbour)->weight;
@@ -380,7 +362,6 @@ ComplexHashTable* Database::shortestPath_Dijkstra(int idOfStartingNode)
 
         }
         delete inOrderOfAVL;
-        myQ->print();
     }
 
 

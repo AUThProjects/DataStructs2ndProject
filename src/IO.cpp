@@ -25,17 +25,18 @@ bool IO::readCommands(char *filename, Database *myDB)
 
     if (myStream) // if found
     {
+        remove( "output.txt" );
         char myString[MAX_INPUT_SIZE_PER_LINE];
         while(!myStream.eof())
         {
             myStream.getline(myString, MAX_INPUT_SIZE_PER_LINE); // reads a line from the file
             command currentCommand = parseLine(myString); // parses the line read
             //------------------Debugging purposes-----------------
-            cout << currentCommand.commandName << endl;
+            /*cout << currentCommand.commandName << endl;
             for (int i=0;i<currentCommand.argc;i++)
             {
                 cout << currentCommand.argv[i] << endl;
-            }
+            }*/
             //-----------------------------------------------------
             if (strcmp("READ_DATA", currentCommand.commandName)==0) // read from input file
             {
@@ -56,16 +57,19 @@ bool IO::readCommands(char *filename, Database *myDB)
             else if (strcmp("MST", currentCommand.commandName)==0) // delete existing link
             {
                 //mimimum spanning tree
+                Database::resultOfMST mstResult = myDB->calculateMST();
+                this->writeMST("output.txt", mstResult);
             }
             else if (strcmp("CN", currentCommand.commandName)==0) // delete existing link
             {
                 //common neighbours
                 int cn = myDB->commonNeighbours(atoi(currentCommand.argv[0]), atoi(currentCommand.argv[1]));
-                this->writeCN("output.txt", cn);
+                this->writeCN("output.txt", cn, atoi(currentCommand.argv[0]), atoi(currentCommand.argv[1]));
             }
             else if (strcmp("SP", currentCommand.commandName)==0) // delete existing link
             {
-                // myDB->shortestPath_Dijkstra(atoi(currentCommand.argv[0]));
+                ComplexHashTable* dijkstraResult = myDB->shortestPath_Dijkstra(atoi(currentCommand.argv[0]));
+                this->writeDijkstra("output.txt", dijkstraResult, atoi(currentCommand.argv[0]));
             }
             else // command not recognized
             {
@@ -134,7 +138,7 @@ bool IO::readInput(char *filename, Database *myDB)
 bool IO::writeIndex(char *filename, Database *myDB)
 {
     ofstream myStream;
-    myStream.open(filename, ios_base::out);
+    myStream.open(filename, ios_base::app);
     if (myStream) // file found
     {
         myStream << *myDB;
@@ -149,13 +153,48 @@ bool IO::writeIndex(char *filename, Database *myDB)
 
 }
 
-bool IO::writeCN(char* filename, int numberOfCommonNeighbours)
+bool IO::writeCN(char* filename, int numberOfCommonNeighbours, int nodeID1, int nodeID2)
 {
     ofstream myStream;
-    myStream.open(filename, ios_base::out);
+    myStream.open(filename, ios_base::app);
     if (myStream) // file found
     {
-        myStream << numberOfCommonNeighbours << endl;
+        myStream << "Common neighbours (" << nodeID1 << ", " << nodeID2 << ") : " << numberOfCommonNeighbours << endl;
+        myStream.close();
+        return true;
+    }
+    else
+    {
+        cout << "Error while loading " << filename << endl;
+        return false;
+    }
+}
+
+bool IO::writeMST(char* filename, Database::resultOfMST mstResult)
+{
+    ofstream myStream;
+    myStream.open(filename, ios_base::app);
+    if (myStream) // file found
+    {
+        myStream << "MST: Cost: " << mstResult.totalCost << "- Time: " << mstResult.timeElapsedInSec <<endl;
+        myStream.close();
+        return true;
+    }
+    else
+    {
+        cout << "Error while loading " << filename << endl;
+        return false;
+    }
+}
+
+bool IO::writeDijkstra(char* filename, ComplexHashTable* dijkstraResult, int startingID)
+{
+    ofstream myStream;
+    myStream.open(filename, ios_base::app);
+    if (myStream) // file found
+    {
+        myStream << "Dijkstra from " << startingID;
+        myStream << *dijkstraResult;
         myStream.close();
         return true;
     }

@@ -8,6 +8,7 @@ Comments:
 
 */#include "../include/MinHeap.h"
 
+/* DEBUGGING PURPOSES
 void MinHeap::print()
 {
     cout << "Printing the minheap.. " <<endl;
@@ -19,7 +20,7 @@ void MinHeap::print()
     cout<< "Printing the hashtable.. "<< endl;
     theIndex->print();
 }
-
+*/
 
 
 MinHeap::MinHeap(int size)
@@ -132,7 +133,7 @@ MinHeap::minHeapEntry MinHeap::getMin()
 
 MinHeap::minHeapEntry MinHeap::popMin()
 {
-    cout << "Attempting to pop " ;
+
     if(currentSize==0)
         throw -2; //Out of bounds..
 
@@ -150,7 +151,7 @@ MinHeap::minHeapEntry MinHeap::popMin()
     theIndex->getElement(lastElementInHeap->id)->position = 0;
     //cout << "ftasame ew" << endl;
     checkLower(posOfCheckingNode);
-    cout << toBeReturned.id << endl;
+
     return toBeReturned;
 }
 

@@ -1,7 +1,7 @@
 #ifndef COMPLEXHASHTABLE_H
 #define COMPLEXHASHTABLE_H
-
-
+#include <iostream>
+using namespace std;
 class ComplexHashTable
 {
     public:
@@ -27,6 +27,8 @@ class ComplexHashTable
         int getCurrentSize();
         complexHashEntry* getElement(int value);
 
+        //overload operators
+        friend ostream& operator<< (ostream& myStream, ComplexHashTable& obj);
 
         bool addElement(complexHashEntry* value);
         bool deleteElement(int id);

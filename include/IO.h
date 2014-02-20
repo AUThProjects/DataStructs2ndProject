@@ -23,7 +23,9 @@ class IO
         bool readCommands(char * filename, Database * db); // reads/parses the commands file
         bool readInput(char * filename, Database * db); //reads/parses the input file
         bool writeIndex(char * filename, Database * db); // writes the output file
-        bool writeCN(char* filename, int numberOfCommonNeighbours);
+        bool writeCN(char* filename, int numberOfCommonNeighbours, int nodeID1, int nodeID2);
+        bool writeMST(char* filename, Database::resultOfMST mstResult);
+        bool writeDijkstra(char* filename, ComplexHashTable* dijkstraResult, int startingID);
     protected:
 };
 

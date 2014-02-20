@@ -82,30 +82,11 @@ int main()
     Database* myDB = new Database();
     cout<< *myDB << endl;
     cout << "Reading commands " <<endl;
-   // myDB->insertNewLink(1,5, 7);
 
-    myDB->insertNewLink(2,3,3);
-    myDB->insertNewLink(2,5,1);
-    myDB->insertNewLink(2,1,100);
-    myDB->insertNewLink(1,5,10);
-    myDB->insertNewLink(5,4,2);
-    myDB->insertNewLink(4,6,1);
-    myDB->insertNewLink(2,6,10);
-    myDB->insertNewLink(4,3,5);
-    myDB->insertNewLink(3,6,10);
-    myDB->insertNewLink(6,8,2);
-    myDB->insertNewLink(6,7,1);
-    myDB->insertNewLink(7,8,1);
-    cout << *myDB << endl;
+   // myDB->insertNewLink(1,5, 7);
    // ComplexHashTable* dijkstra = myDB->shortestPath_Dijkstra(3);
 
     //dijkstra->print();
-    Database::resultOfMST res = myDB->calculateMST();
-    cout << "time" << res.timeElapsedInSec << endl;
-    cout << "cost" << res.totalCost << endl;
-
-    cout << myDB->commonNeighbours(5, 3);
-/*
     IO *myIO = new IO();
     if (!myIO->readCommands("commands.txt", myDB))
     {
@@ -114,7 +95,7 @@ int main()
     }
     cout << "Program ended successfully" << endl;
     //cout << *myDB << endl;
-*/
+
     return 0;
 }
 
@@ -128,7 +109,20 @@ ostream& operator<< (ostream& myStream, AVL& obj)
 ostream& operator<< (ostream& myStream, Node& obj)
 {
     //cout << "\ninside <<operator Node" << endl;
-    myStream<< obj.id << ", " << obj.numberOfConnectedNodes << ", " << *obj.avlTree;
+    myStream<< obj.id << ", " << obj.numberOfConnectedNodes << *obj.avlTree;
+    return myStream;
+}
+
+ostream& operator<< (ostream& myStream, ComplexHashTable& obj)
+{
+    for(int i=0; i< obj.capacity; i++)
+    {
+        if(obj.theArray[i]!=nullptr)
+        {
+            myStream<< ", " << obj.theArray[i]->weight << "(id: "<< obj.theArray[i]->id << ") ";
+        }
+    }
+    myStream<<endl;
     return myStream;
 }
 
