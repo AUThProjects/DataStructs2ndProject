@@ -1,0 +1,43 @@
+Notes on Data structs
+======================
+
+Dijkstra
+========
+1. Ξεκινάς από έναν κόμβο
+2. Παίρνεις τους γείτονες του με τα βάρη τους από το AVL, εξαιρώντας αυτούς που έχεις ήδη επισκευθεί.
+3. Ελέγχεις αν το άθροισμα του προηγούμενου κόμβου για να πας στο τρέχοντα κόμβο είναι μικρότερο από το βάρος που έχεις ήδη στο minheap. Αν είναι, τότε το αλλάζεις. Αλλάζεις και τον προηγούμενο κόμβο.
+4. Κάνεις popMin τον μικτότερο κόμβο και επαναλαμβάνεις την ίδια διαδικασία μέχρι το Q να είναι κενό.
+
+
+
+For the documentation
+=====================
+
+1. Why did we used simple and complex hashtables instead of template implementations
+2. Why do we need id and weight in the minHeapEntry struct?
+3. Implementation of delete in ComplexHashTable:
+	- The complexHashTable suports the minHeap. When you delete an element from the minheap, you must delete it from the hashtable as well.
+		Possible implementations:
+			a) By rehashing until a blank is found.
+			b) By setting the value of the element to a certain key value (for us, the position will be -1).
+				This way, we avoid re-hashing the whole table, with a cost of O(n).
+
+		->changes in the exists. The getElement method of the ComplexHashTable will return the result, even if it has a position of -1.
+		When we are adding a new element, we are checking if we find a record with nullptr, or with position == -1.
+
+
+O(Max(k,l))
+
+O((l*log(k+l)))
+
+
+
+/**************** Debugging begins ***********************/
+* HashTable of Database - checked
+* HashTable (simple, complex) - checked
+* Common Neighbours - checked
+* MinHeap testing - checked
+* Dijkstra - checked
+* Prim - checked
+
+
